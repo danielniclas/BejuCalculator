@@ -1,0 +1,57 @@
+
+
+[
+  {
+    "idValue": 1,
+    "productName": "46-0-0",
+    "ph": 7.2,
+    "costPound": 0.29,
+    "costTon": 580,
+    "costPoundNutrient": 0.63,
+    "liquid": "false",
+    "galWeightDensity": 43,
+    "useFocus": "N",
+    "nitrogen": 0.46,
+    "phosphate": 0.0,
+    "potasium": 0.0,
+    "sulfur": 0.0,
+    "calcium": 0.0,
+    "zinc": 0.0,
+    "magnesium": 0.0,
+    "iron": 0.0,
+    "manganese": 0.0,
+    "copper": 0.0,
+    "boron": 0.0,
+    "totalMicro": 0.0,
+    "om": 0.0
+  },
+
+
+  {
+    "idValue": 2,
+    "productName": "ESN",
+    "ph": 7,
+    "costPound": 0.31,
+    "costTon": 625,
+    "costPoundNutrient": 0.71,
+    "liquid": "false",
+    "galWeightDensity": 48,
+    "useFocus": "N",
+    "nitrogen": 0.44,
+    "phosphate": 0.0,
+    "potasium": 0.0,
+    "sulfur": 0.0,
+    "calcium": 0.0,
+    "zinc": 0.0,
+    "magnesium": 0.0,
+    "iron": 0.0,
+    "manganese": 0.0,
+    "copper": 0.0,
+    "boron": 0.0,
+    "totalMicro": 0.0,
+    "om": 0.0
+  }
+
+]
+
+

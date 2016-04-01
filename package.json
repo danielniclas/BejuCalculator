@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/danielniclas/BejuFertCalc#readme",
   "dependencies": {
+    "angular": "^1.5.3",
     "bootstrap": "^3.3.6"
   }
 }

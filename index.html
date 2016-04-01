@@ -21,6 +21,10 @@
   <!-- Custom styles for this template -->
   <link href="dashboard.css" rel="stylesheet">
 
+  <!--Angular Library-->
+  <script src="node_modules/angular/angular.min.js"></script>
+
+
   <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
   <!--[if lt IE 9]><script src="./assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
   <script src="./assets/js/ie-emulation-modes-warning.js"></script>
@@ -80,28 +84,36 @@
 </nav>
 
 <div class="container-fluid">
+
   <div class="row">
-    <div class="col-sm-3 col-md-2 sidebar">
-      <ul class="nav nav-sidebar">
-        <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Reports</a></li>
-        <li><a href="#">Analytics</a></li>
-        <li><a href="#">Export</a></li>
-      </ul>
-      <ul class="nav nav-sidebar">
-        <li><a href="">Nav item</a></li>
-        <li><a href="">Nav item again</a></li>
-        <li><a href="">One more nav</a></li>
-        <li><a href="">Another nav item</a></li>
-        <li><a href="">More navigation</a></li>
-      </ul>
-      <ul class="nav nav-sidebar">
-        <li><a href="">Nav item again</a></li>
-        <li><a href="">One more nav</a></li>
-        <li><a href="">Another nav item</a></li>
-      </ul>
-    </div>
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+
+    <!--<div class="col-sm-3 col-md-2 sidebar">-->
+      <!--<ul class="nav nav-sidebar">-->
+        <!--<li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>-->
+        <!--<li><a href="#">Reports</a></li>-->
+        <!--<li><a href="#">Analytics</a></li>-->
+        <!--<li><a href="#">Export</a></li>-->
+      <!--</ul>-->
+      <!--<ul class="nav nav-sidebar">-->
+        <!--<li><a href="">Nav item</a></li>-->
+        <!--<li><a href="">Nav item again</a></li>-->
+        <!--<li><a href="">One more nav</a></li>-->
+        <!--<li><a href="">Another nav item</a></li>-->
+        <!--<li><a href="">More navigation</a></li>-->
+      <!--</ul>-->
+      <!--<ul class="nav nav-sidebar">-->
+        <!--<li><a href="">Nav item again</a></li>-->
+        <!--<li><a href="">One more nav</a></li>-->
+        <!--<li><a href="">Another nav item</a></li>-->
+      <!--</ul>-->
+    <!--</div>-->
+
+
+    <!--MAIN CONTENT-->
+
+    <div class="col-md-12 main">
+    <!--<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">-->
       <!--<h1 class="page-header">BeJu Solution Calculator</h1>-->
 
       <div class="row placeholders">
@@ -135,6 +147,7 @@
 
       <h2 class="sub-header">Beju Solution Calculator</h2>
       <div class="table-responsive">
+
         <table class="table table-striped">
           <thead>
           <tr>
@@ -153,114 +166,206 @@
             <td>dolor</td>
             <td>sit</td>
           </tr>
-          <tr>
-            <td>1,002</td>
-            <td>amet</td>
-            <td>consectetur</td>
-            <td>adipiscing</td>
-            <td>elit</td>
-          </tr>
-          <tr>
-            <td>1,003</td>
-            <td>Integer</td>
-            <td>nec</td>
-            <td>odio</td>
-            <td>Praesent</td>
-          </tr>
-          <tr>
-            <td>1,003</td>
-            <td>libero</td>
-            <td>Sed</td>
-            <td>cursus</td>
-            <td>ante</td>
-          </tr>
-          <tr>
-            <td>1,004</td>
-            <td>dapibus</td>
-            <td>diam</td>
-            <td>Sed</td>
-            <td>nisi</td>
-          </tr>
-          <tr>
-            <td>1,005</td>
-            <td>Nulla</td>
-            <td>quis</td>
-            <td>sem</td>
-            <td>at</td>
-          </tr>
-          <tr>
-            <td>1,006</td>
-            <td>nibh</td>
-            <td>elementum</td>
-            <td>imperdiet</td>
-            <td>Duis</td>
-          </tr>
-          <tr>
-            <td>1,007</td>
-            <td>sagittis</td>
-            <td>ipsum</td>
-            <td>Praesent</td>
-            <td>mauris</td>
-          </tr>
-          <tr>
-            <td>1,008</td>
-            <td>Fusce</td>
-            <td>nec</td>
-            <td>tellus</td>
-            <td>sed</td>
-          </tr>
-          <!--<tr>-->
-            <!--<td>1,009</td>-->
-            <!--<td>augue</td>-->
-            <!--<td>semper</td>-->
-            <!--<td>porta</td>-->
-            <!--<td>Mauris</td>-->
-          <!--</tr>-->
-          <!--<tr>-->
-            <!--<td>1,010</td>-->
-            <!--<td>massa</td>-->
-            <!--<td>Vestibulum</td>-->
-            <!--<td>lacinia</td>-->
-            <!--<td>arcu</td>-->
-          <!--</tr>-->
-          <!--<tr>-->
-            <!--<td>1,011</td>-->
-            <!--<td>eget</td>-->
-            <!--<td>nulla</td>-->
-            <!--<td>Class</td>-->
-            <!--<td>aptent</td>-->
-          <!--</tr>-->
-          <!--<tr>-->
-            <!--<td>1,012</td>-->
-            <!--<td>taciti</td>-->
-            <!--<td>sociosqu</td>-->
-            <!--<td>ad</td>-->
-            <!--<td>litora</td>-->
-          <!--</tr>-->
-          <!--<tr>-->
-            <!--<td>1,013</td>-->
-            <!--<td>torquent</td>-->
-            <!--<td>per</td>-->
-            <!--<td>conubia</td>-->
-            <!--<td>nostra</td>-->
-          <!--</tr>-->
-          <!--<tr>-->
-            <!--<td>1,014</td>-->
-            <!--<td>per</td>-->
-            <!--<td>inceptos</td>-->
-            <!--<td>himenaeos</td>-->
-            <!--<td>Curabitur</td>-->
-          <!--</tr>-->
-          <!--<tr>-->
-            <!--<td>1,015</td>-->
-            <!--<td>sodales</td>-->
-            <!--<td>ligula</td>-->
-            <!--<td>in</td>-->
-            <!--<td>libero</td>-->
-          <!--</tr>-->
-
           </tbody>
         </table>
+
+
+
+
+
+
+        <div ng-app="myApp" ng-controller="myCtrl">
+
+          <form name="fertForm" class="form-horizontal" autocomplete="off" novalidate>
+
+
+            <div class="col-md-12 container">
+
+              <div class="form-group">
+                <h2>Fertilizer Data Entry:</h2>
+                <h3>Validation State of the Form - $scope.fertForm.$invalid:
+                <span class="color-{{fertForm.$invalid}}"> {{fertForm.$invalid}} </span></h3>
+              </div>
+
+            </div>
+
+
+
+            <div class="row">
+
+
+              <div class="col-md-4 container">
+
+
+              <div class="form-group">
+                <label for="ident" class="col-sm-2 control-label">Id Value</label>
+                <div class="col-sm-10">
+                  <input type="text" name="fertId" class="form-control" id="ident" placeholder="Enter identification" ng-model="fert.idValue" required>
+                  <label ng-show="fertForm.fertId.$dirty && show" class="red">{{warning}}</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Prod Name</label>
+                <div class="col-sm-10">
+                  <input type="text" name="fertName" class="form-control" id="name" placeholder="Enter name" ng-model="fert.productName" required>
+                  <label for="name" class="red" ng-show="true">This Input is $pristine:
+                    <span class="color-{{fertForm.fertName.$pristine}}">{{fertForm.fertName.$pristine}}</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="ph" class="col-sm-2 control-label">pH</label>
+                <div class="col-sm-10">
+                  <input type="number" name="fertPh" class="form-control" id="ph" placeholder="Enter ph value" ng-model="fert.ph" required >
+                  <label for="ph" class="red" ng-show="true">This Input is $dirty:
+                    <span class="color-{{fertForm.fertPh.$dirty}}">{{fertForm.fertPh.$dirty}}</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="costLb" class="col-sm-2 control-label">Cost/lb</label>
+                <div class="col-sm-10">
+                  <input type="number" name="costLb" class="form-control" id="costLb" placeholder="Enter cost/lb" ng-model="fert.costPound" required>
+                  <label for="costLb" class="red" ng-show="true">This Input is $touched:
+                    <span class="color-{{fertForm.costLb.$touched}}">{{fertForm.costLb.$touched}}</span>
+                  </label>
+                </div>
+              </div>
+
+
+              <div class="form-group">
+                <label for="costLb" class="col-sm-2 control-label">Cost/Ton</label>
+                <div class="col-sm-10">
+                  <input type="number" name="costTon" class="form-control" id="costTon" placeholder="Enter cost/ton" ng-model="fert.costTon" required>
+                  <label for="costLb" class="red" ng-show="true">This Input is $touched:
+                    <span class="color-{{fertForm.costTon.$touched}}">{{fertForm.costTon.$touched}}</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="liquid" class="col-sm-2 control-label">Liquid</label>
+                <div class="col-sm-10">
+                  <input class="checkbox-inline" type="checkbox" name="liquid" id="liquid" value="liquidTrud" ng-model="fert.liquid" required>
+                  <label for="liquid" class="red" ng-show="true">This Input is $touched:
+                    <span class="color-{{fertForm.liquid.$touched}}">{{fertForm.liquid.$touched}}</span>
+                  </label>
+                </div>
+              </div>
+
+
+              <!--idValue, productName, ph, costPound, costTon, costPoundNutrient, liquid,-->
+              <!--galWeightDensity, useFocus, nitrogen, phosphate, potasium, sulfur, calcium, zinc, magnesium, iron, manganese,-->
+              <!--copper, boron, totalMicro, om-->
+
+
+
+
+          </div>
+
+          </div>
+
+
+
+
+
+
+              <!--SUBMIT BUTTON-->
+              <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <button class="btn btn-success pull-left" ng-click="save(fert)" ng-disabled="disable">Add Object</button>
+                  <button class="btn btn-default pull-left" ng-click="reset()">Reset</button>
+                  <button class="btn btn-default pull-left" ng-click="deQueue()">Delete Last Object</button>
+                </div>
+              </div>
+
+
+
+            </form>
+
+
+
+          <div class="panel">
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>Prod</th>
+                <th>pH</th>
+                <th>cost/lb</th>
+                <th>cost/ton</th>
+                <th>cost/lb/nut</th>
+                <th>Liquid</th>
+                <th>GWT</th>
+                <th>Use</th>
+                <th>N&nbsp;</th>
+                <th>P&nbsp;</th>
+                <th>K&nbsp;</th>
+                <th>S&nbsp;</th>
+                <th>Ca</th>
+                <th>Zn</th>
+                <th>Mg</th>
+                <th>Fe</th>
+                <th>Mn</th>
+                <th>Cu</th>
+                <th>B</th>
+                <th>TM</th>
+                <th>OM</th>
+
+              </tr>
+              </thead>
+
+              <tbody>
+              <tr ng-repeat="item in items">
+
+                <td>{{$index+1}}</td>
+                <td>{{item.productName}}</td>
+                <td>{{item.ph|number:1}}</td>
+                <td>{{item.costPound|currency}}</td>
+                <td>{{item.costTon|currency}}</td>
+                <td>{{item.costPoundNutrient|currency}}</td>
+                <td>{{item.liquid}}</td>
+                <td>{{item.galWeightDensity}}</td>
+                <td>{{item.useFocus}}</td>
+                <td>{{item.nitrogen}}</td>
+                <td>{{item.phosphate}}</td>
+                <td>{{item.potasium}}</td>
+                <td>{{item.sulfur}}</td>
+                <td>{{item.calcium}}</td>
+                <td>{{item.zinc}}</td>
+                <td>{{item.magnesium}}</td>
+                <td>{{item.iron}}</td>
+                <td>{{item.manganese}}</td>
+                <td>{{item.copper}}</td>
+                <td>{{item.boron}}</td>
+                <td>{{item.totalMicro}}</td>
+                <td>{{item.om}}</td>
+              </tr>
+
+              </tbody>
+
+            </table>
+
+
+
+          </div>
+
+          <pre ng-bind="items | json"></pre>
+
+
+        </div>
+
+
+
+        </div>
+
+
+
+
+
       </div>
     </div>
   </div>
@@ -277,6 +382,9 @@
 <script src="./assets/js/vendor/holder.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="./assets/js/ie10-viewport-bug-workaround.js"></script>
+
+<!--Application Script:-->
+<script src="app.js"></script>
 
 <script type="text/javascript">
 
