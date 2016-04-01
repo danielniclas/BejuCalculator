@@ -53,7 +53,7 @@
 
 </head>
 
-<body>
+<body ng-app="myApp" ng-controller="myCtrl">
 
 <nav class="navbar navbar-inverse navbar-fixed-top bejuGreenBackground">
   <div class="container-fluid">
@@ -145,26 +145,140 @@
 
       </div>
 
+
+
+
+
+
+
+
+
+      <form name="progForm" class="form-horizontal" autocomplete="off" novalidate>
+
+
+        <div class="col-md-12 container">
+
+          <div class="form-group">
+            <h2>Fertility Program Generator:</h2>
+            <h3>Validation State of the Form - $scope.fertForm.$invalid:
+              <span class="color-{{progForm.$invalid}}"> {{progForm.$invalid}} </span></h3>
+          </div>
+
+        </div>
+
+
+
+        <div class="row">
+
+          <div class="col-md-4 container">
+
+
+            <div class="form-group">
+              <label for="productName" class="col-sm-4 control-label">Product:</label>
+              <div class="col-sm-8">
+                <select name="productName" id="productName" ng-model="product.name"
+                        ng-options="obj.productName as obj.productName for obj in items" class="form-control" required>
+                  <option value="">Select Product</option>
+                </select>
+              <label ng-show="progForm.productName.$dirty && show" class="red">{{warning}}</label>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label for="appMethod" class="col-sm-4 control-label">App Method:</label>
+              <div class="col-sm-8">
+                <select name="appMethod" id="appMethod" ng-model="product.appMethod"
+                        ng-options="obj.value as obj.label for obj in appMethod" class="form-control" required>
+                  <option value="">Application Method</option>
+                </select>
+                <label ng-show="progForm.appMethod.$dirty && show" class="red">{{warning}}</label>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label for="rateAcre" class="col-sm-4 control-label">Rate/Acre:</label>
+              <div class="col-sm-8">
+                <input type="text" name="rateAcre" class="form-control" id="rateAcre" placeholder="Enter Rate/Acre" ng-model="product.rateAcre" required>
+                <label for="rateAcre" class="red" ng-show="true">This Input is $pristine:
+                  <span class="color-{{progForm.rateAcre.$pristine}}">{{progForm.rateAcre.$pristine}}</span>
+                </label>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label for="inGallons" class="col-sm-4 control-label">In Gallons</label>
+              <div class="col-sm-8">
+                <input class="checkbox-inline" type="checkbox" name="inGallons" id="inGallons" value="true" ng-model="product.inGallons" required>
+                <label for="inGallons" class="red" ng-show="true">This Input is $touched:
+                  <span class="color-{{progForm.inGallons.$touched}}">{{progForm.inGallons.$touched}}</span>
+                </label>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+        <!--SUBMIT BUTTON-->
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button class="btn btn-success pull-left" ng-click="submitProduct(product)" ng-disabled="disable">Add Product</button>
+            <button class="btn btn-default pull-left" ng-click="reset()">Reset</button>
+            </div>
+        </div>
+
+      </form>
+
+
+
+
+
+
       <h2 class="sub-header">Beju Solution Calculator</h2>
       <div class="table-responsive">
 
         <table class="table table-striped">
+
+
+
           <thead>
           <tr>
-            <th>#</th>
-            <th>Header</th>
-            <th>Header</th>
-            <th>Header</th>
-            <th>Header</th>
+            <th>Product</th>
+            <th>Rate/Acre</th>
+            <th>In Gallons</th>
+            <th>Pounds/Acre</th>
+            <th>App Method</th>
+            <th>Total Pounds</th>
+            <th>N</th>
+            <th>P</th>
+            <th>K</th>
+            <th>S</th>
+            <th>Micro</th>
+            <th>OM</th>
+            <th>Cost/Acre</th>
           </tr>
           </thead>
+
+
+
           <tbody>
-          <tr>
-            <td>1,001</td>
-            <td>Lorem</td>
-            <td>ipsum</td>
-            <td>dolor</td>
-            <td>sit</td>
+          <tr ng-repeat="element in programArray track by $index">
+            <td>{{element.name}}</td>
+            <td>{{element.rateAcre}}</td>
+            <td>{{element.inGallons}}</td>
+            <td>{{element.poundAcre}}</td>
+            <td>{{element.appMethod}}</td>
+            <td>{{element.totalPounds}}</td>
+            <td>{{element.nitrogen}}</td>
+            <td>{{element.phosphate}}</td>
+            <td>{{element.potasium}}</td>
+            <td>{{element.sulfur}}</td>
+            <td>{{element.totalMicro}}</td>
+            <td>{{element.om}}</td>
+            <td>{{element.costPerAcre|currency}}</td>
           </tr>
           </tbody>
         </table>
@@ -172,9 +286,50 @@
 
 
 
+        <!--<tbody>-->
+        <!--<tr ng-repeat="item in items">-->
+          <!--<td>{{$index+1}}</td>-->
+          <!--<td>{{item.productName}}</td>-->
+          <!--<td>{{item.ph|number:1}}</td>-->
+          <!--<td>{{item.costPound|currency}}</td>-->
+          <!--<td>{{item.costTon|currency:"$":0}}</td>-->
+          <!--<td>{{item.costPoundNutrient|currency}}</td>-->
+          <!--<td>{{item.liquid}}</td>-->
+          <!--<td>{{item.galWeightDensity}}</td>-->
+          <!--<td>{{item.useFocus}}</td>-->
+          <!--<td>{{item.nitrogen}}</td>-->
+          <!--<td>{{item.phosphate}}</td>-->
+          <!--<td>{{item.potasium}}</td>-->
+          <!--<td>{{item.sulfur}}</td>-->
+          <!--<td>{{item.calcium}}</td>-->
+          <!--<td>{{item.zinc}}</td>-->
+          <!--<td>{{item.magnesium}}</td>-->
+          <!--<td>{{item.iron}}</td>-->
+          <!--<td>{{item.manganese}}</td>-->
+          <!--<td>{{item.copper}}</td>-->
+          <!--<td>{{item.boron}}</td>-->
+          <!--<td>{{item.totalMicro}}</td>-->
+          <!--<td>{{item.om}}</td>-->
+        <!--</tr>-->
+        <!--</tbody>-->
+        <!-- -->
+        <!-- -->
+        <!-- -->
 
 
-        <div ng-app="myApp" ng-controller="myCtrl">
+
+
+
+
+
+
+
+
+
+
+
+
+        <div>
 
           <form name="fertForm" class="form-horizontal" autocomplete="off" novalidate>
 
@@ -262,15 +417,8 @@
               <!--copper, boron, totalMicro, om-->
 
 
-
-
           </div>
-
           </div>
-
-
-
-
 
 
               <!--SUBMIT BUTTON-->
@@ -282,24 +430,24 @@
                 </div>
               </div>
 
-
-
             </form>
 
 
 
           <div class="panel">
+
             <table class="table table-striped">
+
               <thead>
               <tr>
                 <th>#</th>
-                <th>Prod</th>
+                <th>Product</th>
                 <th>pH</th>
                 <th>cost/lb</th>
                 <th>cost/ton</th>
-                <th>cost/lb/nut</th>
+                <th>cost/lb-nut</th>
                 <th>Liquid</th>
-                <th>GWT</th>
+                <th>GW-D</th>
                 <th>Use</th>
                 <th>N&nbsp;</th>
                 <th>P&nbsp;</th>
@@ -314,18 +462,16 @@
                 <th>B</th>
                 <th>TM</th>
                 <th>OM</th>
-
               </tr>
               </thead>
 
               <tbody>
               <tr ng-repeat="item in items">
-
                 <td>{{$index+1}}</td>
                 <td>{{item.productName}}</td>
                 <td>{{item.ph|number:1}}</td>
                 <td>{{item.costPound|currency}}</td>
-                <td>{{item.costTon|currency}}</td>
+                <td>{{item.costTon|currency:"$":0}}</td>
                 <td>{{item.costPoundNutrient|currency}}</td>
                 <td>{{item.liquid}}</td>
                 <td>{{item.galWeightDensity}}</td>
@@ -344,7 +490,6 @@
                 <td>{{item.totalMicro}}</td>
                 <td>{{item.om}}</td>
               </tr>
-
               </tbody>
 
             </table>

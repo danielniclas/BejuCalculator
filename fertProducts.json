@@ -25,8 +25,6 @@
     "totalMicro": 0.0,
     "om": 0.0
   },
-
-
   {
     "idValue": 2,
     "productName": "ESN",
@@ -50,8 +48,79 @@
     "boron": 0.0,
     "totalMicro": 0.0,
     "om": 0.0
+  },
+  {
+    "idValue": 3,
+    "productName": "11-52-0",
+    "ph": 4,
+    "costPound": 0.33,
+    "costTon": 655,
+    "costPoundNutrient": 0.52,
+    "liquid": "false",
+    "galWeightDensity": 59,
+    "useFocus": "P",
+    "nitrogen": 0.11,
+    "phosphate": 0.52,
+    "potasium": 0.0,
+    "sulfur": 0.0,
+    "calcium": 0.0,
+    "zinc": 0.0,
+    "magnesium": 0.0,
+    "iron": 0.0,
+    "manganese": 0.0,
+    "copper": 0.0,
+    "boron": 0.0,
+    "totalMicro": 0.0,
+    "om": 0.0
+  },
+  {
+    "idValue": 4,
+    "productName": "40 Rock",
+    "ph": 4.9,
+    "costPound": 0.30,
+    "costTon": 605,
+    "costPoundNutrient": 0.50,
+    "liquid": "false",
+    "galWeightDensity": 60,
+    "useFocus": "P",
+    "nitrogen": 0.12,
+    "phosphate": 0.40,
+    "potasium": 0.0,
+    "sulfur": 0.065,
+    "calcium": 0.0,
+    "zinc": 0.01,
+    "magnesium": 0.0,
+    "iron": 0.0,
+    "manganese": 0.0,
+    "copper": 0.0,
+    "boron": 0.0,
+    "totalMicro": 0.01,
+    "om": 0.0
+  },
+  {
+    "idValue": 5,
+    "productName": "Beju",
+    "ph": 6.1,
+    "costPound": 0.60,
+    "costTon": 1200,
+    "costPoundNutrient": 0.51,
+    "liquid": "false",
+    "galWeightDensity": 63,
+    "useFocus": "Micro",
+    "nitrogen": 0.020,
+    "phosphate": 0.0329,
+    "potasium": 0.0109,
+    "sulfur": 0.002,
+    "calcium": 0.137,
+    "zinc": 0.0001,
+    "magnesium": 0.0030,
+    "iron": 0.004,
+    "manganese": 0.0,
+    "copper": 0.0,
+    "boron": 0.0,
+    "totalMicro": 0.144,
+    "om": 0.83
   }
-
 ]
 
 
