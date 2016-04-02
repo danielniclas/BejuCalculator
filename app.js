@@ -28,20 +28,47 @@ var app = angular.module('myApp',[]);
             }
         });
 
+    app.factory('cropRemovalService', function ($http) {
+
+        var cropRemovalLevels = [];
+
+        return {
+            get: function () {
+
+                $http.get('cropRemoval.json')
+                    .success(function (response) {
+                        for (i=0;i<response.length; i++){
+                            var currentArrayItem = response[i];
+                            cropRemovalLevels.push(currentArrayItem);
+                        }
+                    })
+                    .error(function (err) {
+                        alert('ERROR from cropRemoval factory service ' + err)
+                    });
+                return cropRemovalLevels;
+            }
+        }
+    });
 
 
 
 
+    app.controller('myCtrl', function($scope, fertilizerService, cropRemovalService){
 
-    app.controller('myCtrl', function($scope, fertilizerService){
+        var currentObject, currentItemsObject, property, currentCropElement;
+        var fieldNameHolder, fieldAcresHolder, cropHolder, yieldGoalHolder, irrigationHolder, productionTypeHolder, tillageHolder;
+
 
         $scope.items = [];
         $scope.items = fertilizerService.get();         //  GET Objects from factory (JSON File)  <<  FACTORY DATA
+        $scope.cropRemovalArray = [];
+        $scope.cropRemovalArray = cropRemovalService.get();        //  GET Objects from factory (JSON File)  <<  FACTORY DATA
 
-        $scope.programArray = [];                       //  Array for the Program Generator
+        $scope.customerProgramArray = [];                       //  Array for the Program Generator
+        $scope.cropDisplayArray = [];
 
         $scope.appMethod = [                            //  Select - Array of objects
-            { value: "none", label: "None" },
+            { value: "None", label: "None" },
             { value: "Broadcast", label: "Broadcast" },
             { value: "Strip Till Dry", label: "Strip Till Dry"},
             { value: "Strip Till Liq", label: "Strip Till Liq"},
@@ -53,10 +80,38 @@ var app = angular.module('myApp',[]);
             { value: "Drill", label: "Drill"}
         ];
 
+        $scope.cropList = [                            //  Select - Array of objects
+            { value: "Corn", label: "Corn" },
+            { value: "Wheat", label: "Wheat" },
+            { value: "Soybean", label: "Soybean"},
+            { value: "Alfalfa", label: "Alfalfa"},
+            { value: "Beats", label: "Beats"},
+            { value: "Pop Corn", label: "Pop Corn"},
+            { value: "Edible Beans", label: "Edible Beans"}
+        ];
+
+        $scope.irrigation = [                            //  Select - Array of objects
+            { value: "Irrigated", label: "Irrigated" },
+            { value: "Dryland", label: "Dryland" },
+            { value: "Summer Fallow", label: "Summer Fallow"}
+        ];
+
+        $scope.productionType = [                            //  Select - Array of objects
+            { value: "Organic", label: "Organic" },
+            { value: "Commercial", label: "Commercial" },
+            { value: "Transition", label: "Transition"}
+        ];
+
+        $scope.tillage = [                            //  Select - Array of objects
+            { value: "No Till", label: "No Till" },
+            { value: "Vertical Tillage", label: "Vertical Tillage" },
+            { value: "Strip Till", label: "Strip Till"},
+            { value: "Full Tillage", label: "Full Tillage"},
+            { value: "Minimal Tillage", label: "Minimal Tillage"}
+        ];
 
 
 
-    var currentObject, currentItemsObject, property;
 
     function FertilizerCollection () {          //  Constructor Function for FertilizerCollection Object >> create array of objects [{},{},{}]
 
@@ -165,9 +220,18 @@ var app = angular.module('myApp',[]);
             fertModel.pop();
         };
 
-        $scope.submitProduct = function(product) {                          //  FORM OBJECT: product
+        $scope.addProduct = function(product) {                 //  FORM (Fertility Program Generator) OBJECT: product
 
-            //  Object from for is:  product   product[property]
+            //  Object from form is:  product   product[property]  >>  Build Product Form + elements from items ARRAY
+
+            fieldNameHolder = product.fieldName;
+            fieldAcresHolder = product.fieldAcres;
+            cropHolder = product.crop;
+            yieldGoalHolder = product.yieldGoal;
+            irrigationHolder = product.irrigation;
+            productionTypeHolder = product.productionType;
+            tillageHolder = product.tillage;
+
 
             for (var i = 0; i<$scope.items.length; i++){                    //  Loop through [items] array
                 currentItemsObject = $scope.items[i];                       //  current Items OBJECT in [items]
@@ -184,66 +248,78 @@ var app = angular.module('myApp',[]);
             }
 
             function solutionCalculator (){
+
+
+
                 if (product.inGallons == true){
 
                     product.poundAcre = (product.galWeightDensity * product.rateAcre);
-                    product.totalPounds = (product.galWeightDensity * product.rateAcre);   //  WARNING:  THIS NEEDS TO INCLUDE CUSTOMER ACERAGE TOO!!!!!!!!!!!!!
-                    product.inGallons = "Yes"
+                    product.totalPounds = (product.galWeightDensity * product.rateAcre * product.fieldAcres);   //  WARNING:  THIS NEEDS TO INCLUDE CUSTOMER ACERAGE TOO!!!!!!!!!!!!!
+                    product.inGallons = "Yes";
+                    product.nitrogen *= product.poundAcre;
+                    product.phosphate *= product.poundAcre;
+                    product.potasium *= product.poundAcre;
+                    product.sulfur *= product.poundAcre;
+                    product.totalMicro *= product.poundAcre;
+                    product.om *= product.poundAcre;
+                    product.costPerAcre = (product.costPound * product.poundAcre);
 
                 } else {
                     product.poundAcre = (product.rateAcre);
-                    product.totalPounds = (product.rateAcre);
-                    product.inGallons = "No"
+                    product.totalPounds = (product.rateAcre * product.fieldAcres);
+                    product.inGallons = "No";
+                    product.nitrogen *= product.poundAcre;
+                    product.phosphate *= product.poundAcre;
+                    product.potasium *= product.poundAcre;
+                    product.sulfur *= product.poundAcre;
+                    product.totalMicro *= product.poundAcre;
+                    product.om *= product.poundAcre;
+                    product.costPerAcre = (product.costPound * product.rateAcre);
                 }
 
             }
-
-
-            product.costPerAcre = (product.costPound * product.rateAcre);
-
-
             solutionCalculator();
 
 
+            function cropRemovalLevels () {
+
+                for (i=0; i<$scope.cropRemovalArray.length; i++) {
+                    currentCropElement = $scope.cropRemovalArray[i];
+                    if (product.crop == currentCropElement.cropName &&  $scope.cropDisplayArray.length == 0){
+
+                        console.log("product.yieldGoal:  " + product.yieldGoal);
+
+                        currentCropElement.nitrogen *= product.yieldGoal;
+                        currentCropElement.phosphate *= product.yieldGoal;
+                        currentCropElement.potasium *= product.yieldGoal;
+                        currentCropElement.sulfur *= product.yieldGoal;
+                        currentCropElement.totalMicro *= product.yieldGoal;
+
+
+                        $scope.cropDisplayArray.push(currentCropElement);
+                    }
+                }
+            }
+            cropRemovalLevels();
 
 
 
 
+            $scope.customerProgramArray.push(product);       //  Program Array has added an Product Object that has Form Data + Data From ITEMS
 
-
-            $scope.programArray.push(product);             //  Program Array has added an Product Object that has Form Data + Data From ITEMS
-
-            $scope.progForm.$setPristine();
+            $scope.progForm.$setPristine();                 //  Clear form
             $scope.product = {};
 
-        };
-
-        //
-        //this.idValue = idValue;
-        //this.productName = productName;
-        //this.ph = ph;
-        //this.costPound = costPound;
-        //this.costTon = costTon;
-        //this.costPoundNutrient = costPoundNutrient;
-        //this.liquid = liquid;
-        //this.galWeightDensity = galWeightDensity;
-        //this.useFocus = useFocus;
-        //this.nitrogen = nitrogen;
-        //this.phosphate = phosphate;
-        //this.potasium = potasium;
-        //this.sulfer = sulfur;
-        //this.calcium = calcium;
-        //this.zing = zinc;
-        //this.magnesium = magnesium;
-        //this.iron = iron;
-        //this.manganese = manganese;
-        //this.copper = copper;
-        //this.boron = boron;
-        //this.totalMicro = totalMicro;
-        //this.om = om;
+            $scope.product.fieldName = fieldNameHolder;     //  Reset Form keeper values
+            $scope.product.fieldAcres = fieldAcresHolder;
+            $scope.product.crop = cropHolder;
+            $scope.product.yieldGoal = yieldGoalHolder;
+            $scope.product.irrigation = irrigationHolder;
+            $scope.product.productionType = productionTypeHolder;
+            $scope.product.tillage = tillageHolder;
 
 
-
+        };      //  addProduct() FUNCTION - END
 
 
 

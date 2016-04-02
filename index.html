@@ -48,6 +48,12 @@
     .navbar-toggle {
       border-color: lightgray !important;
     }
+    .table th {
+      text-align: center;
+    }
+    .table td {
+      text-align: center;
+    }
 
   </style>
 
@@ -127,8 +133,41 @@
 
         <div class="col-md-6 col-sm-3 placeholder squarePlaceholder">
           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="110" height="110" class="img-responsive" alt="Generic placeholder thumbnail">
-          <h4>Label</h4>
-          <span class="text-muted">Text Text Text</span>
+          <h4>Est. Pounds Needed for Crop Removal</h4>
+
+
+
+          <div class="table-responsive">
+
+            <table class="table table-striped">
+
+
+              <thead>
+              <tr>
+                <th>Crop</th>
+                <th>N</th>
+                <th>P</th>
+                <th>K</th>
+                <th>S</th>
+                <th>Total Micro</th>
+              </tr>
+              </thead>
+
+              <tbody>
+              <tr ng-repeat="elem in cropDisplayArray track by $index">
+                <td>{{elem.cropName}}</td>
+                <td>{{elem.nitrogen | number:2}}</td>
+                <td>{{elem.phosphate | number:2}}</td>
+                <td>{{elem.potasium | number:2}}</td>
+                <td>{{elem.sulfur | number:2}}</td>
+                <td>{{elem.totalMicro | number:2}}</td>
+              </tr>
+              </tbody>
+            </table>
+
+          </div>
+
+
         </div>
 
 
@@ -148,11 +187,6 @@
 
 
 
-
-
-
-
-
       <form name="progForm" class="form-horizontal" autocomplete="off" novalidate>
 
 
@@ -167,8 +201,99 @@
         </div>
 
 
-
         <div class="row">
+
+          <!--COLUMN 1-->
+
+          <div class="col-md-4 container">
+
+
+            <div class="form-group">
+              <label for="fieldName" class="col-sm-4 control-label">Field Name:</label>
+              <div class="col-sm-8">
+                <input type="text" name="fieldName" class="form-control" id="fieldName" placeholder="Field Name" ng-model="product.fieldName" required>
+                <label for="fieldName" class="red" ng-show="true">This Input is $pristine:
+                  <span class="color-{{progForm.fieldName.$pristine}}">{{progForm.fieldName.$pristine}}</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="fieldAcres" class="col-sm-4 control-label">Field Acres:</label>
+              <div class="col-sm-8">
+                <input type="text" name="fieldAcres" class="form-control" id="fieldAcres" placeholder="Field Acres" ng-model="product.fieldAcres" required>
+                <label for="fieldAcres" class="red" ng-show="true">This Input is $pristine:
+                  <span class="color-{{progForm.fieldAcres.$pristine}}">{{progForm.fieldAcres.$pristine}}</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="productCrop" class="col-sm-4 control-label">Crop:</label>
+              <div class="col-sm-8">
+                <select name="productCrop" id="productCrop" ng-model="product.crop"
+                        ng-options="obj.value as obj.label for obj in cropList" class="form-control" required>
+                  <option value="">Select Crop</option>
+                </select>
+                <label ng-show="progForm.productCrop.$dirty && show" class="red">{{warning}}</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="yieldGoal" class="col-sm-4 control-label">Yield Goal:</label>
+              <div class="col-sm-8">
+                <input type="text" name="yieldGoal" class="form-control" id="yieldGoal" placeholder="Yield Goal" ng-model="product.yieldGoal" required>
+                <label for="yieldGoal" class="red" ng-show="true">This Input is $pristine:
+                  <span class="color-{{progForm.yieldGoal.$pristine}}">{{progForm.yieldGoal.$pristine}}</span>
+                </label>
+              </div>
+            </div>
+
+          </div>
+
+          <!--COLUMN 2-->
+
+          <div class="col-md-4 container">
+
+            <div class="form-group">
+              <label for="irrigation" class="col-sm-4 control-label">Irrig/Dry:</label>
+              <div class="col-sm-8">
+                <select name="productCrop" id="irrigation" ng-model="product.irrigation"
+                        ng-options="obj.value as obj.label for obj in irrigation" class="form-control" required>
+                  <option value="">Select Irrigation</option>
+                </select>
+                <label ng-show="progForm.irrigation.$dirty && show" class="red">{{warning}}</label>
+              </div>
+            </div>
+
+
+              <div class="form-group">
+                <label for="productionType" class="col-sm-4 control-label">Production Type:</label>
+                <div class="col-sm-8">
+                  <select name="productionType" id="productionType" ng-model="product.productionType"
+                          ng-options="obj.value as obj.label for obj in productionType" class="form-control" required>
+                    <option value="">Select Production Type</option>
+                  </select>
+                  <label ng-show="progForm.productionType.$dirty && show" class="red">{{warning}}</label>
+                </div>
+              </div>
+
+            <div class="form-group">
+              <label for="tillage" class="col-sm-4 control-label">Production Type:</label>
+              <div class="col-sm-8">
+                <select name="tillage" id="tillage" ng-model="product.tillage"
+                        ng-options="obj.value as obj.label for obj in tillage" class="form-control" required>
+                  <option value="">Select Tillage</option>
+                </select>
+                <label ng-show="progForm.tillage.$dirty && show" class="red">{{warning}}</label>
+              </div>
+            </div>
+
+
+          </div>
+
+
+          <!--COLUMN 3-->
 
           <div class="col-md-4 container">
 
@@ -180,7 +305,7 @@
                         ng-options="obj.productName as obj.productName for obj in items" class="form-control" required>
                   <option value="">Select Product</option>
                 </select>
-              <label ng-show="progForm.productName.$dirty && show" class="red">{{warning}}</label>
+                <label ng-show="progForm.productName.$dirty && show" class="red">{{warning}}</label>
               </div>
             </div>
 
@@ -218,40 +343,44 @@
               </div>
             </div>
 
-
           </div>
-        </div>
+
+
+
+        </div>   <!--Row END-->
 
         <!--SUBMIT BUTTON-->
+
+        <div class="col-md-12 container">
+
         <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <button class="btn btn-success pull-left" ng-click="submitProduct(product)" ng-disabled="disable">Add Product</button>
-            <button class="btn btn-default pull-left" ng-click="reset()">Reset</button>
-            </div>
+
+            <button class="btn btn-success pull-left" ng-click="addProduct(product)" ng-disabled="disable">Add Product</button>
+            <button class="btn btn-default pull-left" ng-click="resetProduct()">Reset</button>
+
         </div>
 
-      </form>
+       </div>
 
-
+      </form>   <!--Form END-->
 
 
 
 
       <h2 class="sub-header">Beju Solution Calculator</h2>
+
       <div class="table-responsive">
 
         <table class="table table-striped">
-
-
 
           <thead>
           <tr>
             <th>Product</th>
             <th>Rate/Acre</th>
             <th>In Gallons</th>
-            <th>Pounds/Acre</th>
+            <th>lbs/Acre</th>
             <th>App Method</th>
-            <th>Total Pounds</th>
+            <th>Total lbs</th>
             <th>N</th>
             <th>P</th>
             <th>K</th>
@@ -265,71 +394,32 @@
 
 
           <tbody>
-          <tr ng-repeat="element in programArray track by $index">
+          <tr ng-repeat="element in customerProgramArray track by $index">
             <td>{{element.name}}</td>
-            <td>{{element.rateAcre}}</td>
+            <td>{{element.rateAcre | number:2}}</td>
             <td>{{element.inGallons}}</td>
-            <td>{{element.poundAcre}}</td>
+            <td>{{element.poundAcre | number:2}}</td>
             <td>{{element.appMethod}}</td>
-            <td>{{element.totalPounds}}</td>
-            <td>{{element.nitrogen}}</td>
-            <td>{{element.phosphate}}</td>
-            <td>{{element.potasium}}</td>
-            <td>{{element.sulfur}}</td>
-            <td>{{element.totalMicro}}</td>
-            <td>{{element.om}}</td>
+            <td>{{element.totalPounds | number:2}}</td>
+            <td>{{element.nitrogen | number:3}}</td>
+            <td>{{element.phosphate | number:3}}</td>
+            <td>{{element.potasium | number:3}}</td>
+            <td>{{element.sulfur | number:3}}</td>
+            <td>{{element.totalMicro | number:3}}</td>
+            <td>{{element.om | number:3}}</td>
             <td>{{element.costPerAcre|currency}}</td>
           </tr>
           </tbody>
         </table>
 
+        </div>
 
-
-
-        <!--<tbody>-->
-        <!--<tr ng-repeat="item in items">-->
-          <!--<td>{{$index+1}}</td>-->
-          <!--<td>{{item.productName}}</td>-->
-          <!--<td>{{item.ph|number:1}}</td>-->
-          <!--<td>{{item.costPound|currency}}</td>-->
-          <!--<td>{{item.costTon|currency:"$":0}}</td>-->
-          <!--<td>{{item.costPoundNutrient|currency}}</td>-->
-          <!--<td>{{item.liquid}}</td>-->
-          <!--<td>{{item.galWeightDensity}}</td>-->
-          <!--<td>{{item.useFocus}}</td>-->
-          <!--<td>{{item.nitrogen}}</td>-->
-          <!--<td>{{item.phosphate}}</td>-->
-          <!--<td>{{item.potasium}}</td>-->
-          <!--<td>{{item.sulfur}}</td>-->
-          <!--<td>{{item.calcium}}</td>-->
-          <!--<td>{{item.zinc}}</td>-->
-          <!--<td>{{item.magnesium}}</td>-->
-          <!--<td>{{item.iron}}</td>-->
-          <!--<td>{{item.manganese}}</td>-->
-          <!--<td>{{item.copper}}</td>-->
-          <!--<td>{{item.boron}}</td>-->
-          <!--<td>{{item.totalMicro}}</td>-->
-          <!--<td>{{item.om}}</td>-->
-        <!--</tr>-->
-        <!--</tbody>-->
-        <!-- -->
-        <!-- -->
-        <!-- -->
-
-
-
-
-
-
-
-
-
-
-
+      <!--Soliution Calculator END-->
 
 
 
         <div>
+
 
           <form name="fertForm" class="form-horizontal" autocomplete="off" novalidate>
 

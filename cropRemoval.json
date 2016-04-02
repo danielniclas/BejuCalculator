@@ -1,0 +1,59 @@
+
+
+
+[
+  {
+    "idValue": 1,
+    "cropName": "Corn",
+    "ph": 6.8,
+    "nitrogen": 0.75,
+    "phosphate": 0.33,
+    "potasium": 0.23,
+    "sulfur": 0.09,
+    "calcium": 0.024,
+    "zinc": 0.001,
+    "magnesium": 0.0006,
+    "iron": 0.0012,
+    "manganese": 0.0006,
+    "copper": 0.0004,
+    "boron": 0.0006,
+    "totalMicro": 0.0284,
+    "om": 3.0
+  },
+  {
+    "idValue": 2,
+    "cropName": "Wheat",
+    "ph": 6.8,
+    "nitrogen": 1.2,
+    "phosphate": 0.52,
+    "potasium": 0.26,
+    "sulfur": 0.12,
+    "calcium": 0.07,
+    "zinc": 0.003,
+    "magnesium": 0.0,
+    "iron": 0.0,
+    "manganese": 0.002,
+    "copper": 0.0007,
+    "boron": 0.001,
+    "totalMicro": 0.0767,
+    "om": 3.0
+  },
+  {
+    "idValue": 3,
+    "cropName": "Soybeans",
+    "ph": 6.8,
+    "nitrogen": 0.36,
+    "phosphate": 0.77,
+    "potasium": 1.2,
+    "sulfur": 0.18,
+    "calcium": 0.016,
+    "zinc": 0.003,
+    "magnesium": 0.0,
+    "iron": 0.005,
+    "manganese": 0.002,
+    "copper": 0.001,
+    "boron": 0.0006,
+    "totalMicro": 0.0276,
+    "om": 3.0
+  }
+  ]
