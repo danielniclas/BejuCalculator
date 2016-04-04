@@ -60,6 +60,13 @@
     .table td {
       text-align: center;
     }
+    .contained {
+      border: 1px solid black;
+      border-radius: 5px;
+      background-color: greenyellow;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
 
   </style>
 
@@ -162,11 +169,11 @@
               <tbody>
               <tr  ng-repeat="elem in cropViewArray track by $index">
                 <td ng-bind="elem.cropName" ></td>
-                <td ng-bind="elem.nitrogen | number:2" ></td>
-                <td ng-bind="elem.phosphate | number:2" ></td>
-                <td ng-bind="elem.potasium | number:2" ></td>
-                <td ng-bind="elem.sulfur | number:2" ></td>
-                <td ng-bind="elem.totalMicro | number:2" ></td>
+                <td ng-bind="product.yieldGoal?product.yieldGoal*elem.nitrogen:0 | number:2 " ></td>
+                <td ng-bind="product.yieldGoal?product.yieldGoal*elem.phosphate:0 | number:2" ></td>
+                <td ng-bind="product.yieldGoal?product.yieldGoal*elem.potasium:0 | number:2" ></td>
+                <td ng-bind="product.yieldGoal?product.yieldGoal*elem.sulfur:0 | number:2" ></td>
+                <td ng-bind="product.yieldGoal?product.yieldGoal*elem.totalMicro:0 | number:2" ></td>
               </tr>
               </tbody>
             </table>
@@ -196,7 +203,11 @@
 
           <!--COLUMN 1-->
 
-          <div class="col-md-4 container">
+
+          <div class="container col-md-8 contained">
+
+
+          <div class="col-md-6 container ">
 
 
             <div class="form-group">
@@ -244,7 +255,7 @@
 
           <!--COLUMN 2-->
 
-          <div class="col-md-4 container">
+          <div class="col-md-6 container ">
 
             <div class="form-group">
               <label for="irrigation" class="col-sm-4 control-label">Irrig/Dry:</label>
@@ -281,7 +292,18 @@
             </div>
 
 
+            <div class="col-sm-8 col-md-offset-3" ng-if="product.yieldGoal">
+
+              <h2 ng-bind="product.fieldName"></h2>
+
+            </div>
+
+
+
           </div>
+
+          </div>
+
 
 
           <!--COLUMN 3-->
@@ -338,6 +360,8 @@
 
 
 
+
+
         </div>   <!--Row END-->
 
         <!--SUBMIT BUTTON-->
@@ -347,7 +371,7 @@
         <div class="form-group">
 
             <button class="btn btn-success pull-left" ng-click="addProduct(product)" ng-disabled="disable">Add Product</button>
-            <button class="btn btn-default pull-left" ng-click="resetProduct()">Reset</button>
+            <button class="btn btn-default pull-left" ng-click="resetProductForm()">Clear/Reset Form</button>
 
         </div>
 

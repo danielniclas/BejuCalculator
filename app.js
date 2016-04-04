@@ -90,74 +90,133 @@ var app = angular.module('myApp',[]);
 
     app.controller('myCtrl', function($scope, $timeout, fertilizerService, cropRemovalService){
 
+
         var currentObject, currentItemsObject, property, currentCropElement;
         var fieldNameHolder, fieldAcresHolder, cropHolder, yieldGoalHolder, irrigationHolder, productionTypeHolder, tillageHolder;
 
         var cropMarker = 1;
 
-        //  View Data Arrays:
-        $scope.programViewArray = [{"name": "Product", "rateAcre": 0, "inGallons": "yes/no", "poundAcre": 0, "appMethod": "Method", "totalPounds": 0,
-            "nitrogen": 0, "phosphate": 0, "potasium": 0, "sulfur": 0, "totalMicro": 0, "om": 0, "costPerAcre": 0}];                             //  View Array with dummy data
-        $scope.cropViewArray = [{"cropName": "Crop", "nitrogen": 0,"phosphate": 0,"potasium": 0,"sulfur": 0,"totalMicro": 0}];      //  Crop Removal Table dummy data
+
+        //  UTILITY FUNCTION CONSTRUCTOR FUNCTION:  <<  Prepare OBJECT with Functions available to entire CONTROLLER
+
+        function SolutionCalculatorConstructor (){
 
 
-        $scope.items = [];                              //  Array with Fertilizer product Data  (collected from JSON)
-        $scope.items = fertilizerService.get();         //  GET Objects from factory (JSON File)  <<  FACTORY DATA
+            this.initializeData = function (){
 
-        $scope.cropRemovalArray = [];
-        $scope.cropRemovalArray = cropRemovalService.get();        //  GET Objects from factory (JSON File)  <<  FACTORY DATA
-
-        $scope.appMethod = [                            //  Select - Array of objects
-            { value: "None", label: "None" },
-            { value: "Broadcast", label: "Broadcast" },
-            { value: "Strip Till Dry", label: "Strip Till Dry"},
-            { value: "Strip Till Liq", label: "Strip Till Liq"},
-            { value: "Planter Starter", label: "Planter Starter"},
-            { value: "Fertigation", label: "Fertigation"},
-            { value: "Coulter Injection", label: "Coulter Injection"},
-            { value: "Sprayer", label: "Sprayer"},
-            { value: "Cultivation", label: "Cultivation"},
-            { value: "Drill", label: "Drill"}
-        ];
-
-        $scope.cropList = [                            //  Select - Array of objects
-            { value: "Corn", label: "Corn" },
-            { value: "Wheat", label: "Wheat" },
-            { value: "Soybeans", label: "Soybeans"},
-            { value: "Alfalfa", label: "Alfalfa"},
-            { value: "Beats", label: "Beats"},
-            { value: "Pop Corn", label: "Pop Corn"},
-            { value: "Edible Beans", label: "Edible Beans"}
-        ];
-
-        $scope.irrigation = [                            //  Select - Array of objects
-            { value: "Irrigated", label: "Irrigated" },
-            { value: "Dryland", label: "Dryland" },
-            { value: "Summer Fallow", label: "Summer Fallow"}
-        ];
-
-        $scope.productionType = [                            //  Select - Array of objects
-            { value: "Organic", label: "Organic" },
-            { value: "Commercial", label: "Commercial" },
-            { value: "Transition", label: "Transition"}
-        ];
-
-        $scope.tillage = [                            //  Select - Array of objects
-            { value: "No Till", label: "No Till" },
-            { value: "Vertical Tillage", label: "Vertical Tillage" },
-            { value: "Strip Till", label: "Strip Till"},
-            { value: "Full Tillage", label: "Full Tillage"},
-            { value: "Minimal Tillage", label: "Minimal Tillage"}
-        ];
+                //  View Data Arrays:
+                $scope.programViewArray = [{"name": "Product", "rateAcre": 0, "inGallons": "yes/no", "poundAcre": 0, "appMethod": "Method", "totalPounds": 0,
+                    "nitrogen": 0, "phosphate": 0, "potasium": 0, "sulfur": 0, "totalMicro": 0, "om": 0, "costPerAcre": 0}];                //  View Array with dummy data
+                $scope.cropViewArray = [{"cropName": "Crop", "nitrogen": 0,"phosphate": 0,"potasium": 0,"sulfur": 0,"totalMicro": 0}];      //  Crop Removal Table dummy data
 
 
-        //  EVENT to trigger DIGEST CYCLE for ng-show to work --  ng-show/ng-hide requires an EVENT to work properly
-        //  Show & Hide Machine:
-        //$scope.elementShow = false;
-        //$timeout(function () {
-        //    $scope.elementShow = true;
-        //}, 750);
 
+                //$scope.items = [];                              //  Array with Fertilizer product Data  (collected from JSON)
+                //$scope.items = fertilizerService.get();         //  GET Objects from factory (JSON File)  <<  FACTORY DATA
+                //
+                //$scope.cropRemovalArray = [];
+                //$scope.cropRemovalArray = cropRemovalService.get();        //  GET Objects from factory (JSON File)  <<  FACTORY DATA
+
+
+                $scope.appMethod = [                            //  Select - Array of objects  << application method - Drop Down Menu
+                    { value: "None", label: "None" },
+                    { value: "Broadcast", label: "Broadcast" },
+                    { value: "Strip Till Dry", label: "Strip Till Dry"},
+                    { value: "Strip Till Liq", label: "Strip Till Liq"},
+                    { value: "Planter Starter", label: "Planter Starter"},
+                    { value: "Fertigation", label: "Fertigation"},
+                    { value: "Coulter Injection", label: "Coulter Injection"},
+                    { value: "Sprayer", label: "Sprayer"},
+                    { value: "Cultivation", label: "Cultivation"},
+                    { value: "Drill", label: "Drill"}
+                ];
+
+                $scope.cropList = [                            //  Select - Array of objects <<  crop list - Drop Down Menu
+                    { value: "Corn", label: "Corn" },
+                    { value: "Wheat", label: "Wheat" },
+                    { value: "Soybeans", label: "Soybeans"},
+                    { value: "Alfalfa", label: "Alfalfa"},
+                    { value: "Beats", label: "Beats"},
+                    { value: "Pop Corn", label: "Pop Corn"},
+                    { value: "Edible Beans", label: "Edible Beans"}
+                ];
+
+                $scope.irrigation = [                            //  Select - Array of objects <<  irrigation - Drop Down Menu
+                    { value: "Irrigated", label: "Irrigated" },
+                    { value: "Dryland", label: "Dryland" },
+                    { value: "Summer Fallow", label: "Summer Fallow"}
+                ];
+
+                $scope.productionType = [                            //  Select - Array of objects <<  production tyep - Drop Down Menu
+                    { value: "Organic", label: "Organic" },
+                    { value: "Commercial", label: "Commercial" },
+                    { value: "Transition", label: "Transition"}
+                ];
+
+                $scope.tillage = [                            //  Select - Array of objects  <<  tillage - Drop Down Menu
+                    { value: "No Till", label: "No Till" },
+                    { value: "Vertical Tillage", label: "Vertical Tillage" },
+                    { value: "Strip Till", label: "Strip Till"},
+                    { value: "Full Tillage", label: "Full Tillage"},
+                    { value: "Minimal Tillage", label: "Minimal Tillage"}
+                ];
+            };
+
+
+            this.setDummyData =  function () {
+
+                console.log("Set Dummy Data");
+
+                $scope.programViewArray = [{"name": "Product", "rateAcre": 0, "inGallons": "yes/no", "poundAcre": 0, "appMethod": "Method", "totalPounds": 0,
+                    "nitrogen": 0, "phosphate": 0, "potasium": 0, "sulfur": 0, "totalMicro": 0, "om": 0, "costPerAcre": 0}];                //  View Array with dummy data
+                $scope.cropViewArray = [{"cropName": "Crop", "nitrogen": 0,"phosphate": 0,"potasium": 0,"sulfur": 0,"totalMicro": 0}];      //  Crop Removal Table dummy data
+            };
+            this.clearPristineForm = function () {
+
+                console.log("Inside Clear Pristine Form");
+
+                $scope.progForm.$setPristine();              // progForm is the main Form for Solution Calculator <<  set form to Pristine
+                $scope.product = {};                         //  CLEAR OUT THE PRODUCT {OBJECT}
+            };
+            this.prepArrays = function(){
+
+                console.log("Inside prepArrays");
+
+                cropMarker = 1;
+                currentCropElement = {};            //  current Element from loop through cropRemovalArrayFinal
+                $scope.product = {};                //  Reset the product OBJECT created by the Form
+                $scope.cropViewArray = [];          //  Reset the Array for the Crop Removal Table
+                $scope.programViewArray = [];       //  Reset the Array for the Solution Calculator Table
+
+                //cropRemovalArray = [];              //  Reset Array created from cropRemovalService.get()
+
+            };
+
+            this.collectData = function(){                        //  ONLY EVER CALL THIS ONCE!!!!!!
+
+                console.log("Inside COLLECT DATA");
+
+                $scope.items = [];                              //  Array with Fertilizer product Data  (collected from JSON)
+                $scope.items = fertilizerService.get();         //  GET Objects from factory (JSON File)  <<  FACTORY DATA
+
+                cropRemovalArray = [];
+                cropRemovalArray = cropRemovalService.get();        //  GET Objects from factory (JSON File)  <<  FACTORY DATA      <<  THIS SEEMS TO MULTIPLY!!!!!!!!!!!!!!!
+
+            };
+            this.utilityReport = function (){
+                console.log("Using Functions from Solution Calculator Constructor Object")
+            };
+
+        }
+        var utilityFunctions = new SolutionCalculatorConstructor();
+
+
+        utilityFunctions.initializeData();  //  <<  Initialize $scope.DATA  <<  STEP 1 << <<
+        utilityFunctions.collectData();     //  <<  Collect Data from JSON Arrays  <<  STEP 2
+
+
+
+        //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  UN-USED
 
     function FertilizerCollection () {          //  Constructor Function for FertilizerCollection Object >> create array of objects [{},{},{}]
 
@@ -242,16 +301,9 @@ var app = angular.module('myApp',[]);
         }
     };
     }  //  CONSTRUCTOR FUNCTION FertilizerCollection - END
-
-
-    //  INSTANTIATE an Object Instance
+       //  INSTANTIATE an Object Instance
     var fertModel = new FertilizerCollection();     //  Instantiate the FertilizerCollection Class >>  CREATE EMPTY [items] ARRAY
 
-
-
-
-    //fertModel.push(1,"Beju",9,400, 1000, 500);      //  Create new OBJECT <<  Add into [items] array
-    //fertModel.print();
 
         $scope.save = function(fert){                   //  Create new OBJECT from Form <<  Add into [items] arrray
             fertModel.pushObject(fert);
@@ -267,6 +319,9 @@ var app = angular.module('myApp',[]);
         $scope.deQueue = function() {
             fertModel.pop();
         };
+
+    //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  UN-USED
+
 
 
 
@@ -343,24 +398,33 @@ var app = angular.module('myApp',[]);
 
             function cropRemovalCalculator () {         //  Build cropViewArray with Data  << CALCULATIONS for the Crop Removal TABLE
 
-                for (i=0; i<$scope.cropRemovalArray.length; i++) {          //  cropRemovalArray is the data collected from JSON << crop removal data:  Crop,N,P,K,S,Total Micro
-                    currentCropElement = $scope.cropRemovalArray[i];
 
-                        console.log("CROP MARKER ABOVE: " + cropMarker);
 
-                                                                                                                              //  TEST:  if the cropName added to the cropRemovalArray is the same as
+                for (i=0; i<cropRemovalArray.length; i++) {          //  cropRemovalArray is the data collected from JSON << crop removal data:  Crop,N,P,K,S,Total Micro
+                    currentCropElement = cropRemovalArray[i];
+
+                    console.log("SOLUTION CALCULATOR:  cropRemovalArray Length: " + cropRemovalArray.length);
+                    console.log("SOLUTION CALCULATOR:  Nitrogen from cropRemovalArray: " + cropRemovalArray[i].nitrogen);
+
+
+                    //  TEST:  if the cropName added to the cropRemovalArray is the same as
                     if (product.crop == currentCropElement.cropName && $scope.cropViewArray.length == 1 && cropMarker <= 1){  //  cropViewArray will always have 1 element due to dummy data
 
+                        //  currentCropElement is an OBJECT
+
+                        console.log("Product Yield Goal: " + product.yieldGoal);
 
                         $scope.cropViewArray = [];                          //  VIEW ARRAY -- Now CLEAR OUT the dummy data for the Crop Removal Table
 
-                        console.log("CROP MARKER  IN: " + cropMarker);
 
-                        currentCropElement.nitrogen *= product.yieldGoal;   //  Calculate the values for the Crop Removal Table <<  N,P,K,S,Total Micro need to by multiplied with product.YieldTotal
-                        currentCropElement.phosphate *= product.yieldGoal;  //  Reminder:  product {OBJECT} created with form and data from [items] added to it
-                        currentCropElement.potasium *= product.yieldGoal;
-                        currentCropElement.sulfur *= product.yieldGoal;
-                        currentCropElement.totalMicro *= product.yieldGoal;
+                        //  Calculate the values for the Crop Removal Table <<  N,P,K,S,Total Micro need to by multiplied with product.YieldTotal
+                        //  Reminder:  product {OBJECT} created with form and data from [items] added to it
+
+                        //selectedCropRemoval.nitrogen = selectedCropRemoval.nitrogen * product.yieldGoal;
+                        //selectedCropRemoval.phosphate = product.yieldGoal * selectedCropRemoval.phosphate;
+                        //selectedCropRemoval.potasium = product.yieldGoal * selectedCropRemoval.potasium;
+                        //selectedCropRemoval.sulfur = product.yieldGoal * selectedCropRemoval.sulfur;
+                        //selectedCropRemoval.totalMicro = product.yieldGoal * selectedCropRemoval.totalMicro;
 
                         $scope.cropViewArray.push(currentCropElement);      //  <<< Prepare FINAL array for the Crop Removal Table
                         cropMarker++;                                       //  Now make sure don't go in here again <<  ONLY PREPARE DATA FOR CROP REMOVAL TABLE ONCE!!!
@@ -372,19 +436,41 @@ var app = angular.module('myApp',[]);
 
             $scope.programViewArray.push(product);       //  <<<  Prepare FINAL array for Solution Calculator Table <<  push the product {OBJECT} into programViewArray()
 
+
+
             $scope.progForm.$setPristine();              // progForm is the main Form for Solution Calculator <<  set form to Pristine
             $scope.product = {};                         //  CLEAR OUT THE PRODUCT {OBJECT}
 
-            $scope.product.fieldName = fieldNameHolder;     //  Restore Form Values that are retained for each product entered <<  FIELD INFO -- Form keeper values
-            $scope.product.fieldAcres = fieldAcresHolder;
-            $scope.product.crop = cropHolder;
-            $scope.product.yieldGoal = yieldGoalHolder;
-            $scope.product.irrigation = irrigationHolder;
-            $scope.product.productionType = productionTypeHolder;
-            $scope.product.tillage = tillageHolder;
+
+
+            function restoreData() {                           //  Restore data to product {OBJECT} that is fixed and only to be entered once
+                $scope.product.fieldName = fieldNameHolder;     //  Restore Form Values that are retained for each product entered <<  FIELD INFO -- Form keeper values
+                $scope.product.fieldAcres = fieldAcresHolder;
+                $scope.product.crop = cropHolder;
+                $scope.product.yieldGoal = yieldGoalHolder;
+                $scope.product.irrigation = irrigationHolder;
+                $scope.product.productionType = productionTypeHolder;
+                $scope.product.tillage = tillageHolder;
+            }
+            restoreData();
 
 
         };      //  addProduct() FUNCTION - END
+
+
+        //  BUTTON:  CLEAR FORM  <<  function  <<<<<<<<<<<<<<<<  CLEAR FORM  - Button #2
+
+        $scope.resetProductForm = function () {
+
+            utilityFunctions.utilityReport();
+
+            utilityFunctions.clearPristineForm();
+            utilityFunctions.prepArrays();
+            //utilityFunctions.collectData();
+            utilityFunctions.setDummyData();
+
+        }
+
 
 
 });  //  ng-CONTROLLER:  myCtrl - END
