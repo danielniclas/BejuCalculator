@@ -11,19 +11,25 @@
 
   <title>Dashboard Template for Bootstrap</title>
 
+  <!--Angular Library-->
+  <script src="node_modules/angular/angular.min.js"></script>
+  <!--<script src='node_modules/angular-animate/angular-animate.js'></script>-->
+
+  <!--Treasure Spinner JS-->
+  <!--<script src='src/treasure-overlay-spinner.js'></script>-->
+
   <!-- Bootstrap core CSS -->
   <!--<link href="./dist/css/bootstrap.min.css" rel="stylesheet">-->
   <link href="./node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+
+  <!--Treasure Spinner CSS-->
+  <!--<link rel="stylesheet" type="text/css" href="src/treasure-overlay-spinner.css">-->
 
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <link href="./assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
   <!-- Custom styles for this template -->
   <link href="dashboard.css" rel="stylesheet">
-
-  <!--Angular Library-->
-  <script src="node_modules/angular/angular.min.js"></script>
-
 
   <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
   <!--[if lt IE 9]><script src="./assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -59,9 +65,12 @@
 
 </head>
 
+
 <body ng-app="myApp" ng-controller="myCtrl">
 
+
 <nav class="navbar navbar-inverse navbar-fixed-top bejuGreenBackground">
+
   <div class="container-fluid">
 
     <div class="navbar-header">
@@ -115,7 +124,6 @@
       <!--</ul>-->
     <!--</div>-->
 
-
     <!--MAIN CONTENT-->
 
     <div class="col-md-12 main">
@@ -138,9 +146,7 @@
 
 
           <div class="table-responsive">
-
             <table class="table table-striped">
-
 
               <thead>
               <tr>
@@ -154,36 +160,21 @@
               </thead>
 
               <tbody>
-              <tr ng-repeat="elem in cropDisplayArray track by $index">
-                <td>{{elem.cropName}}</td>
-                <td>{{elem.nitrogen | number:2}}</td>
-                <td>{{elem.phosphate | number:2}}</td>
-                <td>{{elem.potasium | number:2}}</td>
-                <td>{{elem.sulfur | number:2}}</td>
-                <td>{{elem.totalMicro | number:2}}</td>
+              <tr  ng-repeat="elem in cropViewArray track by $index">
+                <td ng-bind="elem.cropName" ></td>
+                <td ng-bind="elem.nitrogen | number:2" ></td>
+                <td ng-bind="elem.phosphate | number:2" ></td>
+                <td ng-bind="elem.potasium | number:2" ></td>
+                <td ng-bind="elem.sulfur | number:2" ></td>
+                <td ng-bind="elem.totalMicro | number:2" ></td>
               </tr>
               </tbody>
             </table>
 
           </div>
-
-
         </div>
 
-
-        <!--<div class="col-xs-6 col-sm-3 placeholder">-->
-          <!--<img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">-->
-          <!--<h4>Label</h4>-->
-          <!--<span class="text-muted">Something else</span>-->
-        <!--</div>-->
-        <!--<div class="col-xs-6 col-sm-3 placeholder">-->
-          <!--<img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">-->
-          <!--<h4>Label</h4>-->
-          <!--<span class="text-muted">Something else</span>-->
-        <!--</div>-->
-
       </div>
-
 
 
 
@@ -365,8 +356,6 @@
       </form>   <!--Form END-->
 
 
-
-
       <h2 class="sub-header">Beju Solution Calculator</h2>
 
       <div class="table-responsive">
@@ -394,7 +383,7 @@
 
 
           <tbody>
-          <tr ng-repeat="element in customerProgramArray track by $index">
+          <tr ng-repeat="element in programViewArray track by $index">
             <td>{{element.name}}</td>
             <td>{{element.rateAcre | number:2}}</td>
             <td>{{element.inGallons}}</td>
@@ -556,7 +545,7 @@
               </thead>
 
               <tbody>
-              <tr ng-repeat="item in items">
+              <tr ng-repeat="item in items" repeat-end ="">
                 <td>{{$index+1}}</td>
                 <td>{{item.productName}}</td>
                 <td>{{item.ph|number:1}}</td>
@@ -598,13 +587,11 @@
         </div>
 
 
-
-
-
       </div>
     </div>
   </div>
 </div>
+
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
