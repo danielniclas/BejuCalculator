@@ -20,32 +20,66 @@ var app = angular.module('myApp',['ngRoute']);
 
     app.factory('fertilizerService', function ($http) {
 
-        var fertProducts = [];
+        var fertProductsArray = [];
+
+
+        //  This factory is designed to gather the data with EVERY controller load
 
         return {
-            get: function () {
+
+            getFertProducts: function () {
+
+                fertProductsArray = [];                                 //  EMPTY THE ARRAY and GET THE NEW DATA
 
                 $http.get('fertProducts.json')
                     .success(function (response) {
                         for (i=0;i<response.length; i++){
                             var currentArrayItem = response[i];
-                            fertProducts.push(currentArrayItem);
+                            fertProductsArray.push(currentArrayItem);
                         }
                     })
                     .error(function (err) {
                         alert('ERROR from factory service ' + err)
                     });
-                return fertProducts;
+
+                return fertProductsArray;
             }
-            }
-        });
+            };
+
+
+        //  This factory is designed to only get the data once, no matter how many times the controller is loaded <<  problem solution:  multiplication of data objects
+
+        //var fertProducts = function(){                              //  FUNCTION:  GET data from JSON and push() into [fertProductsArray]
+        //    $http.get('fertProducts.json')
+        //        .success(function (response) {
+        //            for (i=0;i<response.length; i++){
+        //                var currentArrayItem = response[i];
+        //                fertProductsArray.push(currentArrayItem);
+        //            }
+        //        })
+        //        .error(function (err) {
+        //            alert('ERROR from factory service ' + err)
+        //        });
+        //};
+        //fertProducts();                                             //  INVOKE the function << CREATE the fertProductsArray
+        //
+        //return {                                                    //  FACTORY RETURNS >> function (getFertProducts) <<  that RETURNS the [fertProductsArray]
+        //    getFertProducts: function(){
+        //        return fertProductsArray
+        //    }
+        //}
+
+
+        });     //  Factory END
+
+
 
     app.factory('cropRemovalService', function ($http) {
 
         var cropRemovalLevels = [];
 
         return {
-            get: function () {
+            getCropRemovalData: function () {
 
                 $http.get('cropRemoval.json')
                     .success(function (response) {
@@ -71,13 +105,11 @@ var app = angular.module('myApp',['ngRoute']);
     });
 
 
-    app.config(function($routeProvider){       //  Angular OBJECT  Injected Dynamically
+    app.config(function($routeProvider, $httpProvider){       //  Angular OBJECT  Injected Dynamically
+
+        //$httpProvider.defaults.cache = true;
 
         $routeProvider.when('/', {
-            templateUrl: 'partials/solutionCalculator.html',
-            controller: 'myCtrl'
-        });
-        $routeProvider.when('/Calculator', {
             templateUrl: 'partials/solutionCalculator.html',
             controller: 'myCtrl'
         });
@@ -87,11 +119,15 @@ var app = angular.module('myApp',['ngRoute']);
         });
         $routeProvider.when('/View3', {
             templateUrl: 'partials/placeholder1.html',
-            controller: 'myCtrl'
+            controller: 'myCtrl2'
         });
         $routeProvider.otherwise({
             redirectTo: '/'                 // redirect to the ROOT  (View 1)
         });
+    });
+
+    app.controller('myCtrl2', function($scope){
+        $scope.test = "Hello World";
     });
 
 
@@ -102,8 +138,7 @@ var app = angular.module('myApp',['ngRoute']);
         var fieldNameHolder, fieldAcresHolder, cropHolder, yieldGoalHolder, irrigationHolder, productionTypeHolder, tillageHolder;
 
         var cropMarker = 1;
-
-
+        var v = 0;
 
 
 
@@ -136,12 +171,10 @@ var app = angular.module('myApp',['ngRoute']);
 
 
 
-
                 //  View Data Arrays:  DUMMY DATA
                 $scope.programViewArray = [{"name": "Product", "rateAcre": 0, "inGallons": "yes/no", "poundAcre": 0, "appMethod": "Method", "totalPounds": 0,
                     "nitrogen": 0, "phosphate": 0, "potasium": 0, "sulfur": 0, "totalMicro": 0, "om": 0, "costPerAcre": 0}];                //  View Array with dummy data
                 $scope.cropViewArray = [{"cropName": "Crop", "nitrogen": 0,"phosphate": 0,"potasium": 0,"sulfur": 0,"totalMicro": 0}];      //  Crop Removal Table dummy data
-
 
 
 
@@ -250,12 +283,18 @@ var app = angular.module('myApp',['ngRoute']);
             this.collectData = function(){                        //  ONLY EVER CALL THIS ONCE!!!!!!
 
                 console.log("Inside COLLECT DATA");
-                $scope.items = [];                              //  Array with Fertilizer product Data  (collected from JSON)
-                $scope.items = fertilizerService.get();         //  GET Objects from factory (JSON File)  <<  FACTORY DATA
+
+                $scope.items = [];                                          //  Array with Fertilizer product Data  (collected from JSON)
+                $scope.items = fertilizerService.getFertProducts();         //  GET Objects from factory (JSON File)  <<  FACTORY DATA
+
                 cropRemovalArray = [];
-                cropRemovalArray = cropRemovalService.get();        //  GET Objects from factory (JSON File)  <<  FACTORY DATA      <<  THIS SEEMS TO MULTIPLY!!!!!!!!!!!!!!!
+                cropRemovalArray = cropRemovalService.getCropRemovalData();        //  GET Objects from factory (JSON File)  <<  FACTORY DATA      <<  THIS SEEMS TO MULTIPLY!!!!!!!!!!!!!!!
+
+                v++;
+                console.log("Data Collection Count: " + v);
 
             };
+
             this.utilityReport = function (){
                 console.log("Using Functions from Solution Calculator Constructor Object")
             };
@@ -268,110 +307,109 @@ var app = angular.module('myApp',['ngRoute']);
         utilityFunctions.collectData();     //  <<  Collect Data from JSON Arrays       <<  STEP 2
 
 
-
         //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  UN-USED
 
-    function FertilizerCollection () {          //  Constructor Function for FertilizerCollection Object >> create array of objects [{},{},{}]
-
-    //  Constructor function for each product >>  Product Object
-    function FertilizerProduct(idValue, productName, ph, costPound, costTon, costPoundNutrient, liquid,
-    galWeightDensity, useFocus, nitrogen, phosphate, potasium, sulfur, calcium, zinc, magnesium, iron, manganese,
-    copper, boron, totalMicro, om) {
-
-        this.idValue = idValue;
-        this.productName = productName;
-        this.ph = ph;
-        this.costPound = costPound;
-        this.costTon = costTon;
-        this.costPoundNutrient = costPoundNutrient;
-        this.liquid = liquid;
-        this.galWeightDensity = galWeightDensity;
-        this.useFocus = useFocus;
-        this.nitrogen = nitrogen;
-        this.phosphate = phosphate;
-        this.potasium = potasium;
-        this.sulfer = sulfur;
-        this.calcium = calcium;
-        this.zing = zinc;
-        this.magnesium = magnesium;
-        this.iron = iron;
-        this.manganese = manganese;
-        this.copper = copper;
-        this.boron = boron;
-        this.totalMicro = totalMicro;
-        this.om = om;
-    }
-
-    //  Array Methods:
-
-    this.pushObject = function(object){         //  Push finished object into [items] array
-        $scope.items.push(object);
-    };
-
-    this.push = function(idValue, productName, ph, costPound, costTon, costPoundNutrient, liquid,
-                         galWeightDensity, useFocus, nitrogen, phosphate, potasium, sulfur, calcium, zinc, magnesium, iron, manganese,
-                         copper, boron, totalMicro, om){       //  Add element to END of Queue
-
-        var productElement = new FertilizerProduct(idValue, productName, ph, costPound, costTon, costPoundNutrient, liquid,
-            galWeightDensity, useFocus, nitrogen, phosphate, potasium, sulfur, calcium, zinc, magnesium, iron, manganese,
-            copper, boron, totalMicro, om);
-
-        $scope.items.push(productElement);
-    };
-    this.shift = function(){             //  Remove element form BEGINNING of Queue
-        return $scope.items.shift();
-    };
-    this.unshift = function(idValue, productName, ph, costPound, costTon, costPoundNutrient, liquid,
-                            galWeightDensity, useFocus, nitrogen, phosphate, potasium, sulfur, calcium, zinc, magnesium, iron, manganese,
-                            copper, boron, totalMicro, om){   //  Add element to BEGINNING of Queue
-
-        var productElement = new FertilizerProduct(idValue, productName, ph, costPound, costTon, costPoundNutrient, liquid,
-            galWeightDensity, useFocus, nitrogen, phosphate, potasium, sulfur, calcium, zinc, magnesium, iron, manganese,
-            copper, boron, totalMicro, om);
-
-        $scope.items.unshift(productElement);
-    };
-    this.pop = function(){              //  Remove element from END of Queue
-        return $scope.items.pop();
-    };
-    //  Helper Methods:
-    this.peek = function(){
-        return $scope.items[$scope.items.length-1];    //  array[array.length -1]  array.length-1 = the last index  (RETURN the TERMINAL ELEMENT)
-    };
-    this.isEmpty = function(){
-        return ($scope.items.length ==0);       //  returns TRUE if (items.length == 0) << evaluates to TRUE  or FALSE if items.length is NOT == 0
-    };
-    this.size = function(){
-        return $scope.items.length;            //  returns the length of the array << the number of elements
-    };
-    this.clear = function() {
-        $scope.items = [];                     //  set array to empty
-    };
-    this.print = function(){
-        for (var i=0;i<$scope.items.length;i++){
-            currentObject = $scope.items[i];
-            console.log("Current Object ID: " + currentObject.idValue + " Name: " + currentObject.productName + " pH: "  + currentObject.ph + " Cost/Pound: " + currentObject.costPound);      //  Print Array to Console
-        }
-    };
-    }  //  CONSTRUCTOR FUNCTION FertilizerCollection - END
-       //  INSTANTIATE an Object Instance
-    var fertModel = new FertilizerCollection();     //  Instantiate the FertilizerCollection Class >>  CREATE EMPTY [items] ARRAY
-
-
-        $scope.save = function(fert){                   //  Create new OBJECT from Form <<  Add into [items] arrray
-            fertModel.pushObject(fert);
-            $scope.fertForm.$setPristine();
-            $scope.fert = {};
-        };
-
-        $scope.reset = function() {
-            $scope.fertForm.$setPristine();                       //  Form Controller   $setPristine
-            $scope.fert = {};
-        };
-
-        $scope.deQueue = function() {
-            fertModel.pop();
-        };
+    //function FertilizerCollection () {          //  Constructor Function for FertilizerCollection Object >> create array of objects [{},{},{}]
+    //
+    ////  Constructor function for each product >>  Product Object
+    //function FertilizerProduct(idValue, productName, ph, costPound, costTon, costPoundNutrient, liquid,
+    //galWeightDensity, useFocus, nitrogen, phosphate, potasium, sulfur, calcium, zinc, magnesium, iron, manganese,
+    //copper, boron, totalMicro, om) {
+    //
+    //    this.idValue = idValue;
+    //    this.productName = productName;
+    //    this.ph = ph;
+    //    this.costPound = costPound;
+    //    this.costTon = costTon;
+    //    this.costPoundNutrient = costPoundNutrient;
+    //    this.liquid = liquid;
+    //    this.galWeightDensity = galWeightDensity;
+    //    this.useFocus = useFocus;
+    //    this.nitrogen = nitrogen;
+    //    this.phosphate = phosphate;
+    //    this.potasium = potasium;
+    //    this.sulfer = sulfur;
+    //    this.calcium = calcium;
+    //    this.zing = zinc;
+    //    this.magnesium = magnesium;
+    //    this.iron = iron;
+    //    this.manganese = manganese;
+    //    this.copper = copper;
+    //    this.boron = boron;
+    //    this.totalMicro = totalMicro;
+    //    this.om = om;
+    //}
+    //
+    ////  Array Methods:
+    //
+    //this.pushObject = function(object){         //  Push finished object into [items] array
+    //    $scope.items.push(object);
+    //};
+    //
+    //this.push = function(idValue, productName, ph, costPound, costTon, costPoundNutrient, liquid,
+    //                     galWeightDensity, useFocus, nitrogen, phosphate, potasium, sulfur, calcium, zinc, magnesium, iron, manganese,
+    //                     copper, boron, totalMicro, om){       //  Add element to END of Queue
+    //
+    //    var productElement = new FertilizerProduct(idValue, productName, ph, costPound, costTon, costPoundNutrient, liquid,
+    //        galWeightDensity, useFocus, nitrogen, phosphate, potasium, sulfur, calcium, zinc, magnesium, iron, manganese,
+    //        copper, boron, totalMicro, om);
+    //
+    //    $scope.items.push(productElement);
+    //};
+    //this.shift = function(){             //  Remove element form BEGINNING of Queue
+    //    return $scope.items.shift();
+    //};
+    //this.unshift = function(idValue, productName, ph, costPound, costTon, costPoundNutrient, liquid,
+    //                        galWeightDensity, useFocus, nitrogen, phosphate, potasium, sulfur, calcium, zinc, magnesium, iron, manganese,
+    //                        copper, boron, totalMicro, om){   //  Add element to BEGINNING of Queue
+    //
+    //    var productElement = new FertilizerProduct(idValue, productName, ph, costPound, costTon, costPoundNutrient, liquid,
+    //        galWeightDensity, useFocus, nitrogen, phosphate, potasium, sulfur, calcium, zinc, magnesium, iron, manganese,
+    //        copper, boron, totalMicro, om);
+    //
+    //    $scope.items.unshift(productElement);
+    //};
+    //this.pop = function(){              //  Remove element from END of Queue
+    //    return $scope.items.pop();
+    //};
+    ////  Helper Methods:
+    //this.peek = function(){
+    //    return $scope.items[$scope.items.length-1];    //  array[array.length -1]  array.length-1 = the last index  (RETURN the TERMINAL ELEMENT)
+    //};
+    //this.isEmpty = function(){
+    //    return ($scope.items.length ==0);       //  returns TRUE if (items.length == 0) << evaluates to TRUE  or FALSE if items.length is NOT == 0
+    //};
+    //this.size = function(){
+    //    return $scope.items.length;            //  returns the length of the array << the number of elements
+    //};
+    //this.clear = function() {
+    //    $scope.items = [];                     //  set array to empty
+    //};
+    //this.print = function(){
+    //    for (var i=0;i<$scope.items.length;i++){
+    //        currentObject = $scope.items[i];
+    //        console.log("Current Object ID: " + currentObject.idValue + " Name: " + currentObject.productName + " pH: "  + currentObject.ph + " Cost/Pound: " + currentObject.costPound);      //  Print Array to Console
+    //    }
+    //};
+    //}  //  CONSTRUCTOR FUNCTION FertilizerCollection - END
+    //   //  INSTANTIATE an Object Instance
+    //var fertModel = new FertilizerCollection();     //  Instantiate the FertilizerCollection Class >>  CREATE EMPTY [items] ARRAY
+    //
+    //
+    //    $scope.save = function(fert){                   //  Create new OBJECT from Form <<  Add into [items] arrray
+    //        fertModel.pushObject(fert);
+    //        $scope.fertForm.$setPristine();
+    //        $scope.fert = {};
+    //    };
+    //
+    //    $scope.reset = function() {
+    //        $scope.fertForm.$setPristine();                       //  Form Controller   $setPristine
+    //        $scope.fert = {};
+    //    };
+    //
+    //    $scope.deQueue = function() {
+    //        fertModel.pop();
+    //    };
 
     //  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  UN-USED
 
@@ -561,7 +599,15 @@ var app = angular.module('myApp',['ngRoute']);
             utilityFunctions.prepArrays();
             utilityFunctions.clearLowerTableRowData();
             utilityFunctions.setDummyData();
-        }
+        };
+
+
+        setTimeout(function() {
+                console.log("Length of Items Array: " + $scope.items.length);
+                console.log($scope.items);
+            }, 1000
+        );
+
 
 });  //  ng-CONTROLLER:  myCtrl - END
 
