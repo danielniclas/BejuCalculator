@@ -3,7 +3,7 @@
  */
 
 
-var app = angular.module('myApp',[]);
+var app = angular.module('myApp',['ngRoute']);
 
 
     app.directive("repeatEnd", function(){        //  CUSTOM DIRECTIVE:  ng-repeat repeat-end Directive:
@@ -68,6 +68,30 @@ var app = angular.module('myApp',[]);
         return function (input, decimals){
             return $filter('number')(input*100, decimals) + '%'
         }
+    });
+
+
+    app.config(function($routeProvider){       //  Angular OBJECT  Injected Dynamically
+
+        $routeProvider.when('/', {
+            templateUrl: 'partials/solutionCalculator.html',
+            controller: 'myCtrl'
+        });
+        $routeProvider.when('/Calculator', {
+            templateUrl: 'partials/solutionCalculator.html',
+            controller: 'myCtrl'
+        });
+        $routeProvider.when('/ProductData', {
+            templateUrl: 'partials/productData.html',
+            controller: 'myCtrl'
+        });
+        $routeProvider.when('/View3', {
+            templateUrl: 'partials/placeholder1.html',
+            controller: 'myCtrl'
+        });
+        $routeProvider.otherwise({
+            redirectTo: '/'                 // redirect to the ROOT  (View 1)
+        });
     });
 
 
@@ -501,11 +525,11 @@ var app = angular.module('myApp',[]);
                 $scope.percentOm = 0;
 
                 $scope.percentNitrogen = ($scope.sumNitrogen / $scope.sumLbAcre);           //  Calculate the new Row data
-                $scope.percentPhosphate = ($scope.percentPhosphate / $scope.sumLbAcre);
-                $scope.precentPotasium = ($scope.precentPotasium / $scope.sumLbAcre);
-                $scope.precentSulfur = ($scope.precentSulfur / $scope.sumLbAcre);
-                $scope.percentMicro = ($scope.percentMicro / $scope.sumLbAcre);
-                $scope.percentOm = ($scope.percentOm / $scope.sumLbAcre);
+                $scope.percentPhosphate = ($scope.sumPhosphate / $scope.sumLbAcre);
+                $scope.precentPotasium = ($scope.sumPotasium / $scope.sumLbAcre);
+                $scope.precentSulfur = ($scope.sumSulfur / $scope.sumLbAcre);
+                $scope.percentMicro = ($scope.sumTotalMicro / $scope.sumLbAcre);
+                $scope.percentOm = ($scope.sumOm / $scope.sumLbAcre);
 
             }
             estAnaylsisCalculator();

@@ -13,6 +13,7 @@
 
   <!--Angular Library-->
   <script src="node_modules/angular/angular.min.js"></script>
+  <script src="node_modules/angular-route/angular-route.min.js"></script>
   <!--<script src='node_modules/angular-animate/angular-animate.js'></script>-->
 
   <!--Treasure Spinner JS-->
@@ -78,25 +79,21 @@
     .placeholdersAdjust {
       margin-bottom: 0 !important;
     }
-
-
-
     .tableTotal:nth-last-child(1), .tableTotal:nth-last-child(2) {
-      /*Must override Booststrap's striped table rule*/
+      /*Must override Booststrap's striped table rule for the green stripes*/
       background-color: #69bd43 !important;
     }
-
     .red {color: red}
     .color-true {color:#00FF00}
     .color-false {color:#A8A8A8}
-
     form .ng-invalid.ng-dirty { background-color: rgba(255,0,0,0.3); }
     form .ng-valid.ng-dirty { background-color: lightgreen; }
-
-
+    .navOptions {color:black !important;}
   </style>
 
 </head>
+
+
 
 
 <body ng-app="myApp" ng-controller="myCtrl">
@@ -117,561 +114,41 @@
       <!--<a class="navbar-brand" href="#">Project name</a>-->
       <img src="images/micronutrients_header-01-1024x83.png" width="400" height="50">
     </div>
+
     <div id="navbar" class="navbar-collapse collapse navbarBorderColor">
+
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Dashboard</a></li>
-        <li><a href="#">Settings</a></li>
-        <li><a href="#">Profile</a></li>
-        <li><a href="#">Help</a></li>
+        <li><a class="navOptions" href="#/Calculator">Solution Calculator</a></li>
+        <li><a class="navOptions" href="#/ProductData">Product Data</a></li>
+        <li><a class="navOptions" href="#/View3">Placeholder 1</a></li>
+        <li><a class="navOptions" href="#">Placeholder 2</a></li>
       </ul>
-      <form class="navbar-form navbar-right">
-        <input type="text" class="form-control" placeholder="Search...">
-      </form>
+
+      <!--<form class="navbar-form navbar-right">-->
+        <!--<input type="text" class="form-control" placeholder="Search...">-->
+      <!--</form>-->
+
     </div>
   </div>
 </nav>
+<!--TOP NAV END-->
 
-<div class="container-fluid">
 
-  <div class="row">
 
+<div class="container-fluid">   <!--  ENTIRE PAGE CONTAINER  -->
 
-    <!--MAIN CONTENT-->
+  <div class="row">             <!--  ENTIRE PAGE ROW  -->
 
-    <div class="col-md-12 main">
-    <!--<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">-->
-      <!--<h1 class="page-header">BeJu Solution Calculator</h1>-->
 
-      <div class="row placeholders placeholdersAdjust">
 
-        <div class="col-md-6 col-sm-3 placeholder squarePlaceholder">
-          <img src="images/logo-header-01.png" width="400" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
 
-          <div class="col-md-offset-1 col-md-11">
-            <h5 align="left" ng-cloak >Field Name: <strong style="color: green">{{product.fieldName}}</strong></h5>
-            <h5 align="left" ng-cloak >Field Acres: <strong style="color: green">{{product.fieldAcres}}</strong></h5>
-            <h5 align="left" ng-cloak >Crop: <strong style="color: green">{{product.crop}}</strong></h5>
-            <h5 align="left" ng-cloak >Yield Goal: <strong style="color: green">{{product.yieldGoal}}</strong></h5>
-            <h5 align="left" ng-cloak >Irrigation/Dry Land: <strong style="color: green">{{product.irrigation}}</strong></h5>
-            <h5 align="left" ng-cloak >Production Type: <strong style="color: green">{{product.productionType}}</strong></h5>
-            <h5 align="left" ng-cloak >Tillage: <strong style="color: green">{{product.tillage}}</strong></h5>
-          </div>
+    <div ng-view></div>
 
-        </div>
 
-        <div class="col-md-6 col-sm-3 placeholder squarePlaceholder">
-          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="110" height="110" class="img-responsive" alt="Generic placeholder thumbnail">
-          <h4>Est. Pounds Needed for Crop Removal</h4>
 
 
-
-          <div class="table-responsive">
-            <table class="table table-striped">
-
-              <thead>
-              <tr>
-                <th>Crop</th>
-                <th>N</th>
-                <th>P</th>
-                <th>K</th>
-                <th>S</th>
-                <th>Total Micro</th>
-              </tr>
-              </thead>
-
-              <tbody>
-              <tr ng-repeat="elem in cropViewArray track by $index">
-                <td ng-cloak ng-bind="elem.cropName" ></td>
-                <td ng-cloak ng-bind="product.yieldGoal?product.yieldGoal*elem.nitrogen:0 | number:2 " ></td>
-                <td ng-cloak ng-bind="product.yieldGoal?product.yieldGoal*elem.phosphate:0 | number:2" ></td>
-                <td ng-cloak ng-bind="product.yieldGoal?product.yieldGoal*elem.potasium:0 | number:2" ></td>
-                <td ng-cloak ng-bind="product.yieldGoal?product.yieldGoal*elem.sulfur:0 | number:2" ></td>
-                <td ng-cloak ng-bind="product.yieldGoal?product.yieldGoal*elem.totalMicro:0 | number:2" ></td>
-              </tr>
-              </tbody>
-            </table>
-
-          </div>
-        </div>
-
-      </div>
-
-
-      <!--FORM  << START  FORM << START  -->
-
-      <form name="progForm" class="form-horizontal" autocomplete="off" novalidate>
-
-        <div class="col-md-12 container">
-
-          <div class="form-group">
-            <h2>Beju Fertility Program:</h2>
-            <h3 ng-cloak ng-hide="true">Validation State of the Form - $scope.fertForm.$invalid:
-              <span class="color-{{progForm.$invalid}}"> {{progForm.$invalid}} </span></h3>
-          </div>
-
-        </div>
-
-
-        <div class="row">
-
-          <!--COLUMN 1-->
-
-
-          <div class="container col-md-8 contained">
-
-          <div class="col-md-6 container ">
-
-            <div class="form-group">
-              <label for="fieldName" class="col-sm-4 control-label">Field Name:</label>
-              <div class="col-sm-8">
-                <input type="text" name="fieldName" class="form-control" id="fieldName" placeholder="Field Name" ng-model="product.fieldName" required>
-                <span class="red" ng-show="progForm.fieldName.$invalid"> Please enter &#8679;</span><span>&nbsp;</span>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="fieldAcres" class="col-sm-4 control-label">Field Acres:</label>
-              <div class="col-sm-8">
-                <input type="number" name="fieldAcres" class="form-control" id="fieldAcres" placeholder="Field Acres" ng-model="product.fieldAcres" required>
-                      <span class="red" ng-show="progForm.fieldAcres.$invalid"> Please enter &#8679;</span><span>&nbsp;</span>
-              </div>
-            </div>
-
-
-            <div class="form-group">
-              <label for="productCrop" class="col-sm-4 control-label">Crop:</label>
-              <div class="col-sm-8">
-
-                <select name="productCrop"
-                        class="form-control"
-                        id="productCrop"
-                        ng-model="product.crop"
-                        ng-options="obj.value as obj.label for obj in cropList"
-                        required>
-                  <option value="">Select Crop</option>
-                </select>
-
-                <span class="red" ng-show="progForm.productCrop.$invalid"> Please enter &#8679; </span> <span>&nbsp;</span>
-
-              </div>
-            </div>
-
-
-
-            <div class="form-group" style="margin-bottom: 0;">
-              <label for="yieldGoal" class="col-sm-4 control-label">Yield Goal:</label>
-              <div class="col-sm-8">
-                <input type="number" name="yieldGoal" class="form-control" id="yieldGoal" placeholder="Yield Goal" ng-model="product.yieldGoal" required>
-                      <span class="red" ng-show="progForm.yieldGoal.$invalid"> Please enter &#8679;</span><span>&nbsp;</span>
-                </label>
-              </div>
-            </div>
-
-          </div>
-
-
-
-          <!--COLUMN 2-->
-
-          <div class="col-md-6 container ">
-
-            <div class="form-group">
-              <label for="irrigation" class="col-sm-4 control-label">Irrig/Dry:</label>
-              <div class="col-sm-8">
-                <select name="irrigation"
-                        id="irrigation"
-                        ng-model="product.irrigation"
-                        ng-options="obj.value as obj.label for obj in irrigation"
-                        class="form-control"
-                        required>
-                  <option value="">Select Irrigation</option>
-                </select>
-                <span class="red" ng-show="progForm.irrigation.$invalid"> Please enter &#8679; </span> <span>&nbsp;</span>
-              </div>
-            </div>
-
-
-              <div class="form-group">
-                <label for="productionType" class="col-sm-4 control-label">Production Type:</label>
-                <div class="col-sm-8">
-                  <select name="productionType"
-                          id="productionType"
-                          ng-model="product.productionType"
-                          ng-options="obj.value as obj.label for obj in productionType"
-                          class="form-control"
-                          required>
-                    <option value="">Select Production Type</option>
-                  </select>
-                  <span class="red" ng-show="progForm.productionType.$invalid"> Please enter &#8679; </span> <span>&nbsp;</span>
-                </div>
-              </div>
-
-            <div class="form-group" style="margin-bottom: 0;">
-              <label for="tillage" class="col-sm-4 control-label">Tillage:</label>
-              <div class="col-sm-8">
-                <select name="tillage"
-                        id="tillage"
-                        ng-model="product.tillage"
-                        ng-options="obj.value as obj.label for obj in tillage"
-                        class="form-control"
-                        required>
-                  <option value="">Select Tillage</option>
-                </select>
-                <span class="red" ng-show="progForm.tillage.$invalid"> Please enter &#8679; </span> <span>&nbsp;</span>
-              </div>
-            </div>
-
-
-
-
-            <div class="col-sm-11 col-md-offset-1" ng-cloak ng-show="formSectionOneComplete">
-
-              <h3> Section Complete </h3>
-
-            </div>
-
-
-
-          </div>
-
-          </div>
-
-
-
-          <!--COLUMN 3-->
-
-          <div class="container col-md-4 containedTwo">
-
-          <div class="col-md-12 container">
-
-
-            <div class="form-group">
-              <label for="productName" class="col-sm-4 control-label">Product:</label>
-              <div class="col-sm-8">
-                <select name="productName" id="productName" ng-model="product.name"
-                        ng-options="obj.productName as obj.productName for obj in items" class="form-control" required>
-                  <option value="">Select Product</option>
-                </select>
-                <span class="red" ng-show="progForm.productName.$invalid"> Please enter &#8679; </span> <span>&nbsp;</span>
-              </div>
-            </div>
-
-
-            <div class="form-group">
-              <label for="appMethod" class="col-sm-4 control-label">App Method:</label>
-              <div class="col-sm-8">
-                <select name="appMethod" id="appMethod" ng-model="product.appMethod"
-                        ng-options="obj.value as obj.label for obj in appMethod" class="form-control" required>
-                  <option value="">Application Method</option>
-                </select>
-                <span class="red" ng-show="progForm.appMethod.$invalid"> Please enter &#8679; </span> <span>&nbsp;</span>
-              </div>
-            </div>
-
-
-            <div class="form-group">
-              <label for="rateAcre" class="col-sm-4 control-label">Rate/Acre:</label>
-              <div class="col-sm-8">
-                <input type="number" name="rateAcre" class="form-control" id="rateAcre" placeholder="Enter Rate/Acre" ng-model="product.rateAcre" required>
-                <span class="red" ng-show="progForm.rateAcre.$invalid"> Please enter &#8679; </span> <span>&nbsp;</span>
-              </div>
-            </div>
-
-
-            <div class="form-group">
-              <label for="inGallons" class="col-sm-4 control-label">In Gallons</label>
-              <div class="col-sm-8">
-                <input class="checkbox-inline form-control" type="checkbox" name="inGallons" id="inGallons" value="true" ng-model="product.inGallons" required>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-
-
-        </div>   <!--Row END-->
-
-        <!--SUBMIT BUTTON-->
-
-        <div class="col-md-12 container">
-
-        <div class="form-group">
-
-            <button class="btn btn-success pull-left" ng-click="addProduct(product)" ng-disabled="disableAddProduct">Add Product</button>
-            <button class="btn btn-default pull-left" ng-click="resetProductForm()">Clear/Reset Form</button>
-
-        </div>
-
-       </div>
-
-      </form>   <!--Form END-->
-
-
-      <h2 class="sub-header">Beju Solution Calculator</h2>
-
-      <div class="table-responsive">
-
-        <table class="table table-striped">
-
-          <thead>
-          <tr>
-            <th>Product</th>
-            <th>Rate/Acre</th>
-            <th>In Gallons</th>
-            <th>lbs/Acre</th>
-            <th>App Method</th>
-            <th>Total lbs</th>
-            <th>N</th>
-            <th>P</th>
-            <th>K</th>
-            <th>S</th>
-            <th>Micro</th>
-            <th>OM</th>
-            <th>Cost/Acre</th>
-          </tr>
-          </thead>
-
-          <tbody >
-          <tr ng-repeat="element in programViewArray track by $index">
-            <td ng-cloak>{{element.name}}</td>
-            <td ng-cloak>{{element.rateAcre | number:2}}</td>
-            <td ng-cloak>{{element.inGallons}}</td>
-            <td ng-cloak>{{element.poundAcre | number:2}}</td>
-            <td ng-cloak>{{element.appMethod}}</td>
-            <td ng-cloak>{{element.totalPounds | number:2}}</td>
-            <td ng-cloak>{{element.nitrogen | number:3}}</td>
-            <td ng-cloak>{{element.phosphate | number:3}}</td>
-            <td ng-cloak>{{element.potasium | number:3}}</td>
-            <td ng-cloak>{{element.sulfur | number:3}}</td>
-            <td ng-cloak>{{element.totalMicro | number:3}}</td>
-            <td ng-cloak>{{element.om | number:3}}</td>
-            <td ng-cloak>{{element.costPerAcre|currency}}</td>
-          </tr>
-          <tr class="tableTotal">
-            <td ng-cloak>Total lbs/Acre</td>
-            <td ng-cloak>{{ }}</td>
-            <td ng-cloak>{{ }}</td>
-            <td ng-cloak>{{sumLbAcre | number:2}}</td>
-            <td ng-cloak>{{ }}</td>
-            <td ng-cloak>{{sumTotalPounds | number:2 }}</td>
-            <td ng-cloak>{{sumNitrogen | number:2}}</td>
-            <td ng-cloak>{{sumPhosphate | number:2}}</td>
-            <td ng-cloak>{{sumPotasium | number:2}}</td>
-            <td ng-cloak>{{sumSulfur | number:2}}</td>
-            <td ng-cloak>{{sumTotalMicro | number:2}}</td>
-            <td ng-cloak>{{sumOm | number:2}}</td>
-            <td ng-cloak>{{sumCostPerAcre| currency:"USD$ ":2}}</td>
-          </tr>
-          <tr class="tableTotal">
-            <td ng-cloak>Est. Analysis</td>
-            <td ng-cloak>{{ }}</td>
-            <td ng-cloak>{{ }}</td>
-            <td ng-cloak>{{ }}</td>
-            <td ng-cloak>{{ }}</td>
-            <td ng-cloak>{{ }}</td>
-            <td ng-cloak>{{percentNitrogen | percentage:2}}</td>
-            <td ng-cloak>{{percentPhosphate | number:2}}%</td>
-            <td ng-cloak>{{precentPotasium | number:2}}%</td>
-            <td ng-cloak>{{precentSulfur | number:2}}%</td>
-            <td ng-cloak>{{percentMicro | number:2}}%</td>
-            <td ng-cloak>{{percentOm | number:2}}%</td>
-            <td ng-cloak>{{ }}</td>
-          </tr>
-
-          </tbody>
-        </table>
-
-        </div>
-
-
-      <!--Soliution Calculator END-->
-
-
-        <div>
-
-
-          <form name="fertForm" class="form-horizontal" autocomplete="off" novalidate>
-
-
-            <div class="col-md-12 container">
-
-              <div class="form-group">
-                <h2>Fertilizer Data Entry:</h2>
-                <h3>Validation State of the Form - $scope.fertForm.$invalid:
-                <span class="color-{{fertForm.$invalid}}"> {{fertForm.$invalid}} </span></h3>
-              </div>
-
-            </div>
-
-
-
-            <div class="row">
-
-
-              <div class="col-md-4 container">
-
-
-              <div class="form-group">
-                <label for="ident" class="col-sm-2 control-label">Id Value</label>
-                <div class="col-sm-10">
-                  <input type="text" name="fertId" class="form-control" id="ident" placeholder="Enter identification" ng-model="fert.idValue" required>
-                  <label ng-show="fertForm.fertId.$dirty && show" class="red">{{warning}}</label>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="name" class="col-sm-2 control-label">Prod Name</label>
-                <div class="col-sm-10">
-                  <input type="text" name="fertName" class="form-control" id="name" placeholder="Enter name" ng-model="fert.productName" required>
-                  <label for="name" class="red" ng-show="true">This Input is $pristine:
-                    <span class="color-{{fertForm.fertName.$pristine}}">{{fertForm.fertName.$pristine}}</span>
-                  </label>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="ph" class="col-sm-2 control-label">pH</label>
-                <div class="col-sm-10">
-                  <input type="number" name="fertPh" class="form-control" id="ph" placeholder="Enter ph value" ng-model="fert.ph" required >
-                  <label for="ph" class="red" ng-show="true">This Input is $dirty:
-                    <span class="color-{{fertForm.fertPh.$dirty}}">{{fertForm.fertPh.$dirty}}</span>
-                  </label>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="costLb" class="col-sm-2 control-label">Cost/lb</label>
-                <div class="col-sm-10">
-                  <input type="number" name="costLb" class="form-control" id="costLb" placeholder="Enter cost/lb" ng-model="fert.costPound" required>
-                  <label for="costLb" class="red" ng-show="true">This Input is $touched:
-                    <span class="color-{{fertForm.costLb.$touched}}">{{fertForm.costLb.$touched}}</span>
-                  </label>
-                </div>
-              </div>
-
-
-              <div class="form-group">
-                <label for="costLb" class="col-sm-2 control-label">Cost/Ton</label>
-                <div class="col-sm-10">
-                  <input type="number" name="costTon" class="form-control" id="costTon" placeholder="Enter cost/ton" ng-model="fert.costTon" required>
-                  <label for="costLb" class="red" ng-show="true">This Input is $touched:
-                    <span class="color-{{fertForm.costTon.$touched}}">{{fertForm.costTon.$touched}}</span>
-                  </label>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="liquid" class="col-sm-2 control-label">Liquid</label>
-                <div class="col-sm-10">
-                  <input class="checkbox-inline" type="checkbox" name="liquid" id="liquid" value="liquidTrud" ng-model="fert.liquid" required>
-                  <label for="liquid" class="red" ng-show="true">This Input is $touched:
-                    <span class="color-{{fertForm.liquid.$touched}}">{{fertForm.liquid.$touched}}</span>
-                  </label>
-                </div>
-              </div>
-
-
-              <!--idValue, productName, ph, costPound, costTon, costPoundNutrient, liquid,-->
-              <!--galWeightDensity, useFocus, nitrogen, phosphate, potasium, sulfur, calcium, zinc, magnesium, iron, manganese,-->
-              <!--copper, boron, totalMicro, om-->
-
-
-          </div>
-          </div>
-
-
-              <!--SUBMIT BUTTON-->
-              <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <button class="btn btn-success pull-left" ng-click="save(fert)" ng-disabled="disable">Add Object</button>
-                  <button class="btn btn-default pull-left" ng-click="reset()">Reset</button>
-                  <button class="btn btn-default pull-left" ng-click="deQueue()">Delete Last Object</button>
-                </div>
-              </div>
-
-            </form>
-
-
-
-          <div class="panel">
-
-            <table class="table table-striped">
-
-              <thead>
-              <tr>
-                <th>#</th>
-                <th>Product</th>
-                <th>pH</th>
-                <th>cost/lb</th>
-                <th>cost/ton</th>
-                <th>cost/lb-nut</th>
-                <th>Liquid</th>
-                <th>GW-D</th>
-                <th>Use</th>
-                <th>N&nbsp;</th>
-                <th>P&nbsp;</th>
-                <th>K&nbsp;</th>
-                <th>S&nbsp;</th>
-                <th>Ca</th>
-                <th>Zn</th>
-                <th>Mg</th>
-                <th>Fe</th>
-                <th>Mn</th>
-                <th>Cu</th>
-                <th>B</th>
-                <th>TM</th>
-                <th>OM</th>
-              </tr>
-              </thead>
-
-              <tbody>
-              <tr ng-repeat="item in items" repeat-end ="">
-                <td>{{$index+1}}</td>
-                <td>{{item.productName}}</td>
-                <td>{{item.ph|number:1}}</td>
-                <td>{{item.costPound|currency}}</td>
-                <td>{{item.costTon|currency:"$":0}}</td>
-                <td>{{item.costPoundNutrient|currency}}</td>
-                <td>{{item.liquid}}</td>
-                <td>{{item.galWeightDensity}}</td>
-                <td>{{item.useFocus}}</td>
-                <td>{{item.nitrogen}}</td>
-                <td>{{item.phosphate}}</td>
-                <td>{{item.potasium}}</td>
-                <td>{{item.sulfur}}</td>
-                <td>{{item.calcium}}</td>
-                <td>{{item.zinc}}</td>
-                <td>{{item.magnesium}}</td>
-                <td>{{item.iron}}</td>
-                <td>{{item.manganese}}</td>
-                <td>{{item.copper}}</td>
-                <td>{{item.boron}}</td>
-                <td>{{item.totalMicro}}</td>
-                <td>{{item.om}}</td>
-              </tr>
-              </tbody>
-
-            </table>
-
-
-
-          </div>
-
-          <pre ng-bind="items | json"></pre>
-
-
-        </div>
-
-
-
-        </div>
-
-
-      </div>
-    </div>
   </div>
+
 </div>
 
 

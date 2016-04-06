@@ -120,6 +120,30 @@
     "boron": 0.0,
     "totalMicro": 0.144,
     "om": 0.83
+  },
+  {
+    "idValue": 6,
+    "productName": "Starter",
+    "ph": 6.0,
+    "costPound": 0.33,
+    "costTon": 650,
+    "costPoundNutrient": 0.85,
+    "liquid": "true",
+    "galWeightDensity": 11.47,
+    "useFocus": "P",
+    "nitrogen": 0.08,
+    "phosphate": 0.26,
+    "potasium": 0.03,
+    "sulfur": 0.00,
+    "calcium": 0.00,
+    "zinc": 0.0025,
+    "magnesium": 0.00,
+    "iron": 0.0025,
+    "manganese": 0.0,
+    "copper": 0.0,
+    "boron": 0.0005,
+    "totalMicro": 0.0055,
+    "om": 0.00
   }
 ]
 
